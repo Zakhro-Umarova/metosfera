@@ -1,0 +1,342 @@
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <title>Register</title>
+
+    <style>
+        body {
+            background: url("{% static 'img/register-bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .register-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 100px auto;
+            color: #fff;
+        }
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form {
+            margin-left: 0px;
+            display: block;
+            margin-top: 0em;
+            unicode-bidi: isolate;
+            margin-block-end: 1em;
+            background-color: transparent;
+        }
+        .form-control {
+            background-color: transparent;
+            border: 1px solid #ccc;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .form-control::placeholder {
+            color: #ccc;
+        }
+        .form-text {
+            color: #ccc;
+        }
+
+        .btn-submit {
+            background-color: #00bfff;
+            border: none;
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var phoneInput = document.getElementById("phone");
+            phoneInput.value = "+998";
+            phoneInput.addEventListener("input", function() {
+                if (!phoneInput.value.startsWith("+998")) {
+                    phoneInput.value = "+998";
+                }
+            });
+
+            var firstNameInput = document.getElementById("first_name");
+            var lastNameInput = document.getElementById("last_name");
+            var usernameInput = document.getElementById("username");
+
+            function updateUsername() {
+                var firstName = firstNameInput.value.trim();
+                var lastName = lastNameInput.value.trim();
+                if (firstName && lastName) {
+                    usernameInput.value = firstName +'_'+lastName;
+                } else {
+                    usernameInput.value = "";
+                }
+            }
+
+            firstNameInput.addEventListener("input", updateUsername);
+            lastNameInput.addEventListener("input", updateUsername);
+        });
+    </script>
+</head>
+<body>
+
+<header class="header" id="header">
+		<div class="container">
+			<div class="nav">
+				<img src="{% static 'img/logo.svg'%} " alt="I learn IT" class="logo">
+				<ul class="menu">
+					<li>
+						<a href="{%  url 'index' %}">
+							Bosh sahifa
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'index' %}">
+							Biz haqimizda
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'index' %}">
+							Kurslar
+						</a>
+					</li>
+				</ul>
+				<div class="user-data">
+					<a href="#">
+						<img src="{%  static 'img/lang.png' %}" alt="uz" id="lang" class="lang">
+					</a>
+					<a href="{% url 'login' %} " class="sign-in">
+						Kirish
+					</a>
+					<!-- <a href="#" class="sign-up-btn">	<span>
+							Ro'yxatdan o'tish
+						</span>
+					</a>
+			 -->	</div>
+			</div>
+        </div>
+	</header>
+
+    <div class="register-container">
+        <h2>RO'YXATDAN O'TISH</h2>
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>E-mail<span class="text-danger">*</span></label>
+                    <input name="email" type="email" class="form-control" placeholder="E-mail">
+                </div>
+                <!-- Error message for email -->
+                {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                <div class="alert alert-danger" style="display: block;">
+                   <strong>{{ error|escape }}</strong>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Parol<span class="text-danger">*</span></label>
+                    <input name="password1" type="password" class="form-control" placeholder="Password" id="password1">
+                    <span class="btn-show-pass" style="position: absolute; right: 10px; top: 35%;">
+                        <i class="fa fa-eye" id="fa-eye1" onclick="passwordShowOrHide('password1', 'fa-eye1')"></i>
+                    </span>
+                </div>
+                <!-- Error message for password -->
+                {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                <div class="alert alert-danger" style="display: block;">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Parolni tasdiqlash<span class="text-danger">*</span></label>
+                    <input name="password2" type="password" class="form-control" placeholder="Confirm Password" id="password2">
+                    <span class="btn-show-pass" style="position: absolute; right: 10px; top: 35%;">
+                        <i class="fa fa-eye" id="fa-eye2" onclick="passwordShowOrHide('password2', 'fa-eye2')"></i>
+                    </span>
+                </div>
+                <!-- Error message for confirm password -->
+                {% if form.password2.errors %}
+                {% for error in form.password2.errors %}
+                <div class="alert alert-danger" style="display: block;">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+{%endfor%}
+                {%endif%}
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Ism<span class="text-danger">*</span></label>
+                    <input name="first_name" type="text" class="form-control" id="first_name" placeholder="First Name">
+                </div>
+                <!-- Error message for first name -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Familiya<span class="text-danger">*</span></label>
+                    <input name="last_name" type="text" class="form-control" id="last_name" placeholder="Last Name">
+                </div>
+                <!-- Error message for last name -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Sharifi<span class="text-danger">*</span></label>
+                    <input name="patronymic" type="text" class="form-control" placeholder="Patronymic">
+                </div>
+                <!-- Error message for patronymic -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Foydalanuvchi nomi (Username)<span class="text-danger">*</span></label>
+                    <input name="username" type="text" class="form-control" id="username" placeholder="Username" readonly>
+                </div>
+                <!-- Error message for username -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Telefon raqami<span class="text-danger">*</span></label>
+                    <input name="phone" type="text" class="form-control" id="phone" placeholder="+998">
+                </div>
+                <!-- Error message for phone -->
+{% if form.phone.errors %}
+                {% for error in form.phone.errors %}
+                <div class="alert alert-danger" style="display: block;">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+{%endfor%}
+                {%endif%}
+
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Universitet<span class="text-danger">*</span></label>
+                    <select name ='university'  class="form-control">
+                        <option>TDPU</option>
+                        <option>QDPI</option>
+                        <option>UzFiPI</option>
+                    </select>
+                </div>
+                <!-- Error message for university -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Fakultet<span class="text-danger">*</span></label>
+                    <input name="faculty" type="text" class="form-control" placeholder="Faculty">
+                </div>
+                <!-- Error message for faculty -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Guruh<span class="text-danger">*</span></label>
+                    <input name="group" type="text" class="form-control" placeholder="Group">
+                </div>
+                <!-- Error message for group -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group position-relative">
+                    <label>Avatar<span class="text-danger">*</span></label>
+                    <input name="avatar" type="file" class="form-control">
+                </div>
+                <!-- Error message for avatar -->
+                <div class="alert alert-danger" style="display: none;">
+                    <strong>Error message here</strong>
+                </div>
+            </div>
+            <button type="submit" class="btn-submit" >Jo'natish</button>
+        </form>
+
+    </div>
+<footer id="footer" class="footer">
+		<div class="container">
+			<div class="footer-block">
+				<p class="credits">
+					 Zakhro Umarova © 2023. <br><!-- with <i class="fa fa-heart-o" aria-hidden="true"></i> -->  Barcha huquqlar himoyalangan.
+				</p>
+				<div class="social">
+					<span> Bizni kuzatib boring</span><br>
+					<a rel="nofollow" href="https://www.facebook.com" target="blank" title="facebook">
+						<i class="fa fa-facebook"></i>
+					</a>
+					<a rel="nofollow" href="telegram.org" title="telegram" target="blank">
+						<i class="fa fa-telegram"></i>
+					</a>
+					<a rel="nofollow" href="https://www.youtube.com" title="youtube" target="blank">
+						<i class="fa fa-youtube-play"></i>
+					</a>
+					<a rel="nofollow" href="https://www.instagram.com" title="instagram" target="blank">
+						<i class="fa fa-instagram"></i>
+					</a>
+				</div>
+				<div id="toTop" class="toTop">
+					<a href="#top">
+						<img src="{% static 'img/up-alt.svg' %}" alt="" class="up">
+				</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+<script src="{% static 'js/jquery-3.3.1.min.js' %} "></script>
+<script src="{% static 'js/main.js'%} "></script>
+<script>
+ function passwordShowOrHide(passwordFieldId, iconId) {
+    var passwordField = document.getElementById(passwordFieldId);
+    var icon = document.getElementById(iconId);
+
+    console.log("Password Field:", passwordField); // Check if this is null
+    console.log("Icon:", icon); // Check if this is null
+
+    // Check if the password field and icon exist
+    if (passwordField && icon) {
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    } else {
+        console.error("Element not found: ", passwordFieldId, iconId);
+    }
+}
+</script>
+</body>
+</html>

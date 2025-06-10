@@ -1,0 +1,37 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Minutes of Knowledge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/infobite.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+</head>
+<body>
+ <div class="flex-container">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-lg w-full" >
+        <h1 class="text-2xl font-bold mb-4 text-center">1 Minutes of Knowledge</h1>
+        <div class="mb-4">
+<!--            <iframe id="videoFrame" class="w-full h-64 rounded-lg" src="{{selectedVideoUrl}}" frameborder="0" allowfullscreen></iframe>-->
+            <video  id="videoFrame"  class="w-full h-64 rounded-lg" controls style="width: 512px; height: 512px;">
+                    <source id="videoSource"  src="" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+
+        </div>
+        <div class="flex justify-between">
+            <button onclick="downloadVideo()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                <i class="fas fa-download"></i> Download
+            </button>
+            <button onclick="shareOnTelegram()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                <i class="fas fa-share"></i> Share on Telegram
+            </button>
+            <button onclick="getRandomVideo()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+                <i class="fas fa-random"></i> Next Video
+            </button>
+        </div>
+    </div>
+ </div>
+</body>
+</html>

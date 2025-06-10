@@ -1,0 +1,1007 @@
+        {% load static %}
+    <html lang="en">
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+        <style>
+
+            .fa-trash:before {
+                content: "\f1f8";
+            }
+            .text-box {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 5px;
+            }
+            .text-box .actions {
+                display: flex;
+                gap: 5px;
+            }
+            .color-box {
+                width: 30px;
+                height: 30px;
+                border-radius: 5px;
+                cursor: pointer;
+                border: 2px solid transparent;
+            }
+             .color-box.selected {
+                border: 2px solid black;
+            }
+                 #notesContainer {
+            max-height: 70vh; /* Set a maximum height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px; /* Add some padding */
+                }
+            img {
+                max-width: 100%; /* Ensure images do not exceed the width of their container */
+                height: auto; /* Maintain aspect ratio */
+            }
+        </style>
+    </head>
+    <body class="bg-gray-100 h-screen flex">
+        <!-- Sidebar -->
+        <div id="sidebar_notes" class="bg-white w-64 h-full shadow-lg fixed transform -translate-x-full transition-transform duration-300">
+            <div class="p-4">
+                <h2 class="text-xl font-bold">My Notes</h2>
+                <ul id="note-lists" class="mt-4">
+                    {% for list in lists %}
+                    <li class="sticker p-2 bg-yellow-200 border border-yellow-300 rounded shadow cursor-pointer" data-list-id="{{ list.id }}" >
+                        <button class="text-red-500 hover:text-red-700 delete-btn" onclick="deleteList({{ list.id }}, this)">
+                            <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
+                        </button>
+                           {{list.title}}
+                    </li>
+                    {% endfor %}
+                    <!-- Dynamic list items will be appended here -->
+                    <!-- Dynamic list items will be appended here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col items-center justify-center">
+            <!-- Sidebar Toggle Button -->
+            <button id="sidebar_notes_Toggle" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-r-lg">
+                >
+            </button>
+
+            <!-- Content Area -->
+            <div id="mainContent" class="text-center">
+                <h1 class="text-2xl font-bold">Qaydnomalar ilovangizga xush kelibsiz (Welcome to Your Note Taking App)</h1>
+                <p class="mt-2">Yangi qayd yoki list yaratish uchun qo'shish tugmasini bosing (Click the plus button to create a new note or list)</p>
+                <div class="container mx-auto p-4">
+                    <div id="notesContainer" class="content-area">
+                <!-- Notes will be dynamically added here -->
+            </div>
+        </div>
+            </div>
+
+            <!-- Floating Action Button -->
+            <button id="fab" class="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg">
+                <i class="fas fa-plus"></i>
+            </button>
+
+            <!-- Context Menu -->
+            <div id="contextMenu" class="fixed bottom-16 right-4 bg-white shadow-lg rounded-lg p-4 hidden">
+                <ul>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="list">
+                        <i class="fas fa-list mr-2"></i> Qayd ro'yxati (List)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="text">
+                        <i class="fas fa-font mr-2"></i> Matn (Text)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="image">
+                        <i class="fas fa-image mr-2"></i> Rasm (Image)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="audio">
+                        <i class="fas fa-microphone mr-2"></i> Audio (Audio)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="video">
+                        <i class="fas fa-video mr-2"></i> Video (Video)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="url">
+                        <i class="fas fa-link mr-2"></i> URL manzil (URL)
+                    </li>
+                    <li class="flex items-center p-2 cursor-pointer hover:bg-gray-100" data-type="file">
+                        <i class="fas fa-file mr-2"></i> Fayl (File)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Modal for Creating List -->
+        <div id="listModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Yangi list yaratish (Create New List)</h2>
+                <input id="listTitle" type="text" placeholder="Title" class="w-full p-2 border border-gray-300 rounded mb-4">
+                <textarea id="listDescription" placeholder="Description (optional)" class="w-full p-2 border border-gray-300 rounded mb-4"></textarea>
+                <div class="flex justify-end">
+                    <button id="createList" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Yaratish (Create)</button>
+                    <button id="cancelList" class="bg-red-500 text-white px-4 py-2 rounded">Bekor qilish (Cancel)</button>
+                </div>
+            </div>
+        </div>
+
+       <!-- Modal for Adding Text -->
+        <div id="textModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Matn qo'shish (Add Text)</h2>
+                <div class="flex mb-4">
+                    <button class="color-box bg-green-500 mx-1" data-color="green"></button>
+                    <button class="color-box bg-yellow-500 mx-1" data-color="yellow"></button>
+                    <button class="color-box bg-red-500 mx-1" data-color="red"></button>
+                </div>
+                <div class="flex mb-4">
+                    <select id="fontName" class="border border-gray-300 rounded p-1">
+                        <option value="Roboto">Roboto</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                    </select>
+                    <select id="fontSize" class="border border-gray-300 rounded p-1">
+                        <option value="16">16</option>
+                        <option value="20">20</option>
+                        <option value="24">24</option>
+                    </select>
+                    <input type="color" id="fontColor" class="border border-gray-300 rounded mb-2" onchange="applyTextStyle()">
+                    <button class="font-bold p-2" onclick="toggleBold()">B</button>
+                    <button class="italic p-2" onclick="toggleItalic()">I</button>
+                    <button class="underline p-2" onclick="toggleUnderline()">U</button>
+                    <select id="textAlign" class="border border-gray-300 rounded p-1" onchange="applyTextStyle()">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                        <option value="justify">Justify</option>
+                    </select>
+                </div>
+                <textarea id="noteContent" class="border p-2 w-full rounded mb-4" rows="6" placeholder="Enter your note here..." oninput="applyTextStyle()"></textarea>
+                <div class="flex justify-end">
+                    <button id="addText" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Qo'shish (Add)</button>
+                    <button id="cancelText" class="bg-red-500 text-white px-4 py-2 rounded">Bekor qilish (Cancel)</button>
+                </div>
+            </div>
+        </div>
+            <!-- Modal for Adding Image -->
+            <div id="imageModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-bold mb-4">Rasm qo'shish (Add Image)</h2>
+                    <input type="file" id="image-upload" class="w-full p-2 border border-gray-300 rounded">
+                <div class="flex justify-end">
+                    <button id="addImage" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 mt-2">Qo'shish (Add)</button>
+                    <button id="cancelImage" class="bg-red-500 text-white px-4 py-2 rounded mr-2 mt-2">Bekor qilish (Cancel)</button>
+                </div>
+                </div>
+            </div>
+            <!-- Modal for Adding Audio -->
+                    <div id="audioModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                           <h2 class="text-xl font-bold mb-4">Audio qo'shish (Add Audio)</h2>
+                           <input type="file" id="audio-upload" class="w-full p-2 border border-gray-300 rounded" accept="audio/*">
+                           <div class="flex justify-end">
+                                <button id="addAudio" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 mt-2">Qo'shish (Add)</button>
+                                <button id="cancelAudio" class="bg-red-500 text-white px-4 py-2 rounded mr-2 mt-2">Bekor qilish (Cancel)</button>
+                           </div>
+                        </div>
+                    </div>
+        <!-- Modal for Adding Video -->
+                    <div id="videoModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                           <h2 class="text-xl font-bold mb-4">Video qo'shish (Add Video)</h2>
+                           <input type="file" id="video-upload" class="w-full p-2 border border-gray-300 rounded" accept="video/*">
+                        <div class="flex justify-end">
+                            <button id="addVideo" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 mt-2">Qo'shish (Add)</button>
+                            <button id="cancelVideo" class="bg-red-500 text-white px-4 py-2 rounded mr-2 mt-2">Bekor qilish (Cancel)</button>
+                        </div>
+                        </div>
+                    </div>
+        <!-- Modal for Adding URL -->
+                    <div id="urlModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                           <h2 class="text-xl font-bold mb-4">URL qo'shish (Add URL)</h2>
+                           <input type="text" id="url-content" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter URL">
+                        <div class="flex justify-end">
+                            <button id="addUrl" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 mt-2">Qo'shish (Add)</button>
+                            <button id="cancelUrl" class="bg-red-500 text-white px-4 py-2 rounded mr-2 mt-2">Bekor qilish (Cancel)</button>
+                        </div>
+                        </div>
+                    </div>
+        <!-- Modal for Adding File -->
+                    <div id="fileModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                           <h2 class="text-xl font-bold mb-4">Fayl qo'shish (Add File)</h2>
+                           <input type="file" id="file-upload" class="w-full p-2 border border-gray-300 rounded">
+                        <div class="flex justify-end">
+                            <button id="addFile" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 mt-2">Qo'shish(Add)</button>
+                            <button id="cancelFile" class="bg-red-500 text-white px-4 py-2 rounded mr-2 mt-2">Bekor qilish (Cancel)</button>
+                        </div>
+                        </div>
+                    </div>
+        <script>
+            const sidebar_notes = document.getElementById('sidebar_notes');
+            const sidebar_notes_Toggle = document.getElementById('sidebar_notes_Toggle');
+            const fab = document.getElementById('fab');
+            const contextMenu = document.getElementById('contextMenu');
+            const textModal = document.getElementById('textModal');
+            const listModal = document.getElementById('listModal');
+            const noteLists = document.getElementById('note-lists');
+            const mainContent = document.getElementById('mainContent');
+            let activeList = null;
+            let listContents = {};
+            const notesContainer = document.getElementById('notesContainer');
+
+            sidebar_notes_Toggle.addEventListener('click', () => {
+                sidebar_notes.classList.toggle('-translate-x-full');
+                sidebar_notes_Toggle.textContent = sidebar_notes.classList.contains('-translate-x-full') ? '>' : '<';
+            });
+
+            fab.addEventListener('click', () => {
+                contextMenu.classList.toggle('hidden');
+            });
+
+            contextMenu.addEventListener('click', (e) => {
+                const type = e.target.closest('li').dataset.type;
+                if (type === 'list') {
+                    listModal.classList.remove('hidden');
+                    contextMenu.classList.add('hidden');
+                } else if (type === 'text') {
+                    if (activeList) {
+                        // document.getElementById('textModal').classList.remove('hidden');
+                        contextMenu.classList.add('hidden');
+                        textModal.classList.remove('hidden');
+                    } else {
+                        alert('Please select a list to add text to.');
+                    }
+                }else if (type === 'image') {
+                    // Implement image upload functionality
+                    if (activeList) {
+                        contextMenu.classList.add('hidden');
+                        imageModal.classList.remove('hidden');
+
+                    } else {
+                        alert('Please select a list to add image to.');
+                    }
+
+                } else if (type === 'audio') {
+                    // Implement audio upload functionality
+                    if (activeList) {
+                        contextMenu.classList.add('hidden');
+                        audioModal.classList.remove('hidden');
+
+                    } else {
+                        alert('Please select a list to add audio to.');
+                    }
+                } else if (type === 'video') {
+                    // Implement video upload functionality
+                    if (activeList) {
+                        contextMenu.classList.add('hidden');
+                        videoModal.classList.remove('hidden');
+
+                    } else {
+                        alert('Please select a list to add video to.');
+                    }
+                } else if (type === 'url') {
+                    // Implement URL functionality
+                    if (activeList) {
+                        contextMenu.classList.add('hidden');
+                        urlModal.classList.remove('hidden');
+
+                    } else {
+                        alert('Please select a list to add URL to.');
+                    }
+                } else if (type === 'file') {
+                    // Implement file upload functionality
+                    if (activeList) {
+                        contextMenu.classList.add('hidden');
+                        fileModal.classList.remove('hidden');
+
+                    } else {
+                        alert('Please select a list to add file to.');
+                    }
+                }
+            });
+
+
+            // Function to handle entering a list
+            function enterList(listItem) {
+                activeList = listItem; // Set the clicked list as the active list
+                const title = listItem.textContent.trim(); // Get the title from the active list
+
+
+
+                // Get the element where you want to display the list content
+                let contentArea = document.getElementById('notesContainer');
+
+                // Update the contentArea with the list title, exit button, and list content
+                contentArea.innerHTML = `
+                    <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                    <div id="contentArea"></div>
+                `;
+
+                // Display the contents of the active list
+                const contents = listContents[title] || [];
+                contentArea = document.getElementById('contentArea');
+                //contentArea.innerHTML = contents.map(content => `<div class="text-box bg-blue-100 p-2 rounded mb-2">${content}</div>`).join('');
+                contentArea.innerHTML = contents.join(''); // Join the contents as HTML
+
+                // Highlight the active list
+                Array.from(noteLists.children).forEach(item => item.classList.remove('active'));
+                listItem.classList.add('active');
+
+                // // Exit button functionality
+                // document.getElementById('exitList').addEventListener('click', () => {
+                //     // Reset the active list
+                //     activeList = null; // Reset activeList to null
+                //     Array.from(noteLists.children).forEach(item => item.classList.remove('active'));
+                //
+                //     // Clear the content area
+                //     const contentArea = document.getElementById('notesContainer');
+                //     contentArea.innerHTML = ''; // Clear the content area
+                //     // Reset the main content to the welcome message
+                //     mainContent.innerHTML = `<h1 class="text-2xl font-bold">Welcome to Your Note Taking App</h1><p class="mt-2">Click the plus button to create a new note or list.</p>`;
+                // });
+            }
+
+            // Create List Functionality
+            document.getElementById('createList').addEventListener('click', () => {
+                const title = document.getElementById('listTitle').value.trim();
+                const description = document.getElementById('listDescription').value.trim();
+
+                if (title) {
+                    const existingTitles = Array.from(noteLists.children).map(item => item.textContent.trim());
+                    if (existingTitles.includes(title)) {
+                        alert('There is already a list with this name. Please choose a different title.');
+                    } else {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'p-2 bg-yellow-200 border border-yellow-300 rounded shadow cursor-pointer';
+                        listItem.textContent = title;
+                        listItem.dataset.description = description;
+
+                        // Create delete button
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'text-red-500 hover:text-red-700 delete-btn';
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>'; // Font Awesome trash icon
+
+
+
+                        // Append delete button to the list item
+                        listItem.appendChild(deleteBtn);
+
+                        listItem.addEventListener('click', () => {
+                        //     activeList = listItem; // Set the clicked list as the active list
+                        //     //mainContent.innerHTML = `<h2 class="text-2xl font-bold mb-4">${title}</h2><button id="exitList" class="bg-red-500 text-white px-4 py- 2 rounded mb-4">Exit</button><div id="contentArea"></div>`;
+                        //     // Get the element where you want to display the list content
+                        //
+                        //     let contentArea = document.getElementById('notesContainer');
+                        //
+                        //     // Update the contentArea with the list title, exit button, and list content
+                        //     contentArea.innerHTML = `
+                        //         <h2 class="text-2xl font-bold mb-4">${title}</h2>
+                        //         <button id="exitList" class="bg-red-500 text-white px-4 py-2 rounded mb-4">Exit</button>
+                        //         <div id="contentArea"></div>
+                        //     `;
+                        //
+                        //
+                        //     // Display the contents of the active list
+                        //     const contents = listContents[title] || [];
+                        //     contentArea = document.getElementById('contentArea');
+                        //     contentArea.innerHTML = contents.map(content => `<div class="text-box bg-blue-100 p-2 rounded mb-2">${content}</div>`).join('');
+                        //
+                        //     // Highlight the active list
+                        //     Array.from(noteLists.children).forEach(item => item.classList.remove('active'));
+                        //     listItem.classList.add('active');
+                        //
+                        //     // Exit button functionality
+                        //     document.getElementById('exitList').addEventListener('click', () => {
+                        //     // Reset the active list
+                        //     activeList = null; // Reset activeList to null
+                        //     // Clear the content area
+                        //     const contentArea = document.getElementById('notesContainer');
+                        //     contentArea.innerHTML = ''; // Clear the content area
+                        //      // Reset the main content to the welcome message
+                        //     mainContent.innerHTML = `<h1 class="text-2xl font-bold">Welcome to Your Note Taking App</h1><p class="mt-2">Click the plus button to create a new note or list.</p>`;
+                        //     });
+                        //
+                        // });
+                        listItem.addEventListener('click', () => enterList(listItem)); // Call the enterList function
+                });
+
+                    // Add event listener for delete button
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent triggering the list click event
+                        if (confirm('Are you sure you want to delete this list?')) {
+                            listItem.remove(); // Remove the list item from the sidebar
+                            delete listContents[title]; // Remove the associated content from listContents
+                        }
+                    });
+
+
+                        noteLists.appendChild(listItem);
+                        listContents[title] = []; // Initialize content array for the new list
+
+                        document.getElementById('listTitle').value = '';
+                        document.getElementById('listDescription').value = '';
+                        listModal.classList.add('hidden');
+                    }
+                } else {
+                    alert('Title is required');
+                }
+            });
+
+            document.getElementById('cancelList').addEventListener('click', () => {
+                document.getElementById('listTitle').value = '';
+                document.getElementById('listDescription').value = '';
+                listModal.classList.add('hidden');
+            });
+
+            // Add Text Functionality
+            // document.getElementById('addText').addEventListener('click', () => {
+            //     const textContent = document.getElementById('textContent').value.trim();
+            //     if (textContent && activeList) {
+            //         const title = activeList.textContent.trim();
+            //         listContents[title].push(textContent); // Add text to the list's content array
+            //         const contentArea = document.getElementById('contentArea');
+            //         const textItem = document.createElement('div');
+            //         textItem.className = 'text-box bg-blue-100 p-2 rounded mb-2';
+            //         textItem.textContent = textContent;
+            //         contentArea.appendChild(textItem);
+            //         document.getElementById('textContent').value = '';
+            //         document.getElementById('textModal').classList.add('hidden');
+            //     } else {
+            //         alert('Text content is required and a list must be selected.');
+            //     }
+            // });
+            document.getElementById('addText').addEventListener('click', () => {
+                const content = document.getElementById('noteContent').value.trim();
+                ///const color = document.querySelector('.color-box.selected') ? document.querySelector('.color-box.selected').dataset.color : 'red';
+                const selectedColorBox = document.querySelector('.color-box.selected');
+                const color = selectedColorBox ? selectedColorBox.dataset.color : 'red'; // Default to red if no color is selected
+                const alignment = document.getElementById('textAlign').value;
+                if (content && activeList) {
+                     const title = activeList.textContent.trim(); // Get the title from the active list
+
+                    // Create the note element
+
+                    const note = document.createElement('div');
+                    note.className = `bg-${color}-100 p-4 rounded shadow mb-4`;
+                    note.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <p class="break-words" style="${getTextStyle(alignment)}">${content}</p>
+                    `;
+                     // Append the note to the notesContainer
+                    notesContainer.appendChild(note);
+            // Store the note content in the listContents object
+            if (!listContents[title]) {
+                listContents[title] = []; // Initialize if it doesn't exist
+            }
+            listContents[title].push(content); // Add the content to the active list
+                      // Clear the input and hide the modal
+                    textModal.classList.add('hidden');
+                    document.getElementById('noteContent').value = '';
+                    addNoteEventListeners(note);
+                     /// Update the content area of the active list immediately
+                    ///const contentArea = document.getElementById('contentArea');
+                    ///contentArea.innerHTML += `<div class="text-box bg-${color}-100 p-2 rounded mb-2">${content}</div>`;
+
+                } else {
+                    alert('Text content is required.');
+                }
+            });
+
+            document.getElementById('cancelText').addEventListener('click', () => {
+                textModal.classList.add('hidden');
+                document.getElementById('noteContent').value = '';
+            });
+
+            function getTextStyle(alignment) {
+                const fontName = document.getElementById('fontName').value;
+                const fontSize = document.getElementById('fontSize').value;
+                const fontColor = document.getElementById('fontColor').value;
+                const isBold = document.getElementById('noteContent').classList.contains('font-bold');
+                const isItalic = document.getElementById('noteContent').classList.contains('italic');
+                const isUnderline = document.getElementById('noteContent').classList.contains('underline');
+
+                return `
+                    font-family: ${fontName};
+                    font-size: ${fontSize}px;
+                    color: ${fontColor};
+                    font-weight: ${isBold ? 'bold' : 'normal'};
+                    font-style: ${isItalic ? 'italic' : 'normal'};
+                    text-decoration: ${isUnderline ? 'underline' : 'none'};
+                    text-align: ${alignment};
+                `;
+            }
+
+            function applyTextStyle() {
+                const noteContent = document.getElementById('noteContent');
+                noteContent.style.fontFamily = document.getElementById('fontName').value;
+                noteContent.style.fontSize = document.getElementById('fontSize').value + 'px';
+                noteContent.style.color = document.getElementById('fontColor').value;
+                noteContent.style.textAlign = document.getElementById('textAlign').value;
+            }
+
+            function toggleBold() {
+                document.getElementById('noteContent').classList.toggle('font-bold');
+            }
+
+            function toggleItalic() {
+                document.getElementById('noteContent').classList.toggle('italic');
+            }
+
+            function toggleUnderline() {
+                document.getElementById('noteContent').classList.toggle('underline');
+            }
+
+            function addNoteEventListeners(note) {
+                const editBtn = note.querySelector('.edit-btn');
+                const deleteBtn = note.querySelector('.delete-btn');
+
+                editBtn.addEventListener('click', () => {
+                    const content = note.querySelector(' p').innerText;
+                    document.getElementById('noteContent').value = content;
+                    textModal.classList.remove('hidden');
+                    //note.remove();
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure?')) {
+                        note.remove();
+                    }
+                });
+            }
+            function addListEventListeners(list) {
+                const editBtn = list.querySelector('.edit-btn');
+                const deleteBtn = list.querySelector('.delete-btn');
+
+                editBtn.addEventListener('click', () => {
+                    const title = list.querySelector('h3').innerText;
+                    const description = list.querySelector('p').innerText;
+                    document.getElementById('listTitle').value = title;
+                    document.getElementById('listDescription').value = description;
+                    listModal.classList.remove('hidden');
+                    list.remove();
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure?')) {
+                        list.remove();
+                    }
+                });
+            }
+
+            document.querySelectorAll('.color-box').forEach(box => {
+                box.addEventListener('click', function() {
+                    document.querySelectorAll('.color-box').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Similar event listeners for other content types (image, audio, video, URL, file) would be added here
+            document.getElementById('addImage').addEventListener('click', () => {
+                   const imageUpload = document.getElementById('image-upload').files[0];
+                   if (imageUpload && activeList) {
+                   const title = activeList.textContent.trim(); // Get the title from the active list
+                    // Create the note element
+                   const imageBox = document.createElement('div');
+                   imageBox.classList.add('p-4', 'border', 'border-gray-300', 'rounded', 'mb-4');
+                    //imageBox.classList.add('text-box', 'bg-blue-100', 'p-4', 'rounded', 'mb-4', 'flex', 'justify-between', 'items-center');
+
+                   const img = document.createElement('img');
+                   img.src = URL.createObjectURL(imageUpload);
+                   img.alt = "Uploaded image";
+                   img.classList.add('w-auto', 'h-full', 'max-h-300');
+
+                   imageBox.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                   imageBox.appendChild(img);
+                   // Append the note to the notesContainer
+                   notesContainer.appendChild(imageBox);
+                   // Store the note content in the listContents object
+                   if (!listContents[title]) {
+                        listContents[title] = []; // Initialize if it doesn't exist
+                    }
+                    listContents[title].push(imageBox.outerHTML); // Store the outerHTML of the imageBox
+                      // Clear the input and hide the modal
+                    imageModal.classList.add('hidden');
+                    document.getElementById('image-upload').value = ''; // Clear the file input
+                    // Add event listeners for edit and delete buttons
+                    addImageEventListeners(imageBox, imageUpload);
+
+                   } else {
+                        alert('Image content is required and a list must be selected.');
+                    }
+            });
+
+            document.getElementById('cancelImage').addEventListener('click', () => {
+                        imageModal.classList.add('hidden');
+                        document.getElementById('noteContent').value = '';
+                    });
+            function addImageEventListeners(imageBox, originalImageFile) {
+        const editBtn = imageBox.querySelector('.edit-btn');
+        const deleteBtn = imageBox.querySelector('.delete-btn');
+
+        editBtn.addEventListener('click', () => {
+            // Allow the user to upload a new image
+            document.getElementById('image-upload').click(); // Trigger the file input click
+            document.getElementById('image-upload').onchange = function() {
+                const newImageFile = this.files[0];
+                if (newImageFile) {
+                    const newImg = document.createElement('img');
+                    newImg.src = URL.createObjectURL(newImageFile);
+                    newImg.alt = "Uploaded image";
+                    newImg.classList.add('w-auto', 'h-full', 'max-h-300'); // Limit height for better layout
+
+                    // Replace the old image with the new one
+                    imageBox.replaceChild(newImg, imageBox.querySelector('img'));
+
+                    // Update the listContents with the new image link
+                    const title = activeList.textContent.trim();
+                    const index = listContents[title].indexOf(originalImageFile.name);
+                    if (index > -1) {
+                        listContents[title][index] = newImg.outerHTML; // Update the stored link
+                    }
+                }
+            };
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete this image?')) {
+                imageBox.remove(); // Remove the image note from the display
+                const title = activeList.textContent.trim();
+                const index = listContents[title].indexOf(originalImageFile.name);
+                if (index > -1) {
+                    listContents[title].splice(index, 1); // Remove the image from the listContents
+                }
+            }
+        });
+    }
+            // Listeners for Audio
+            document.getElementById('addAudio').addEventListener('click', () => {
+                   const audioUpload = document.getElementById('audio-upload').files[0];
+                   if (audioUpload && activeList) {
+                   const title = activeList.textContent.trim(); // Get the title from the active list
+                    // Create the note element
+                   const audioBox = document.createElement('div');
+                   audioBox.classList.add('p-4', 'border', 'border-gray-300', 'rounded', 'mb-4');
+                   const audio = document.createElement('audio');
+                   audio.controls = true; // Add controls to the audio element
+                   audio.src = URL.createObjectURL(audioUpload); // Set the source to the uploaded file
+
+                   audioBox.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+
+                   audioBox.appendChild(audio); // Append the audio element to the audioBox
+
+                   // Append the note to the notesContainer
+                   notesContainer.appendChild(audioBox);
+                   // Store the note content in the listContents object
+                   if (!listContents[title]) {
+                        listContents[title] = []; // Initialize if it doesn't exist
+                    }
+                    listContents[title].push(audioBox.outerHTML); // Store the outerHTML of the audioBox
+                      // Clear the input and hide the modal
+                    audioModal.classList.add('hidden');
+                    document.getElementById('audio-upload').value = ''; // Clear the file input
+
+                    // Add event listeners for edit and delete buttons
+                    addAudioEventListeners(audioBox, audioUpload);
+
+                   } else {
+                        alert('Audio content is required and a list must be selected.');
+                    }
+            });
+
+            document.getElementById('cancelAudio').addEventListener('click', () => {
+                        audioModal.classList.add('hidden');
+                        document.getElementById('noteContent').value = '';
+                    });
+              function addAudioEventListeners(audioBox, originalAudioFile) {
+                const editBtn = audioBox.querySelector('.edit-btn');
+                const deleteBtn = audioBox.querySelector('.delete-btn');
+
+                editBtn.addEventListener('click', () => {
+                    // Allow the user to upload a new audio
+                    document.getElementById('audio-upload').click(); // Trigger the file input click
+                    document.getElementById('audio-upload').onchange = function() {
+                        const newAudioFile = this.files[0];
+                        if (newAudioFile) {
+                            const newAudio = document.createElement('audio');
+                            newAudio.controls = true; // Add controls to the audio element
+                            newAudio.src = URL.createObjectURL(newAudioFile); // Set the source to the uploaded file
+
+                            // Replace the old image with the new one
+                            audioBox.replaceChild(newAudio, audioBox.querySelector('audio'));
+
+                            // Update the listContents with the new image link
+                            const title = activeList.textContent.trim();
+                            const index = listContents[title].indexOf(originalAudioFile.name);
+                            if (index > -1) {
+                                listContents[title][index] = newAudio.outerHTML; // Update the stored link
+                            }
+                        }
+                    };
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete this audio?')) {
+                        audioBox.remove(); // Remove the audio note from the display
+                        const title = activeList.textContent.trim();
+                        const index = listContents[title].indexOf(originalAudioFile.name);
+                        if (index > -1) {
+                            listContents[title].splice(index, 1); // Remove the audio from the listContents
+                        }
+                    }
+                });
+            }
+            // Listeners for Video
+            document.getElementById('addVideo').addEventListener('click', () => {
+                   const videoUpload = document.getElementById('video-upload').files[0];
+                   if (videoUpload && activeList) {
+                   const title = activeList.textContent.trim(); // Get the title from the active list
+                    // Create the note element
+                   const videoBox = document.createElement('div');
+                   videoBox.classList.add('p-4', 'border', 'border-gray-300', 'rounded', 'mb-4');
+                   const video = document.createElement('video');
+                   video.controls = true; // Add controls to the video element
+                   video.src = URL.createObjectURL(videoUpload); // Set the source to the uploaded file
+
+                   videoBox.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+
+                   videoBox.appendChild(video); // Append the audio element to the audioBox
+
+                   // Append the note to the notesContainer
+                   notesContainer.appendChild(videoBox);
+                   // Store the note content in the listContents object
+                   if (!listContents[title]) {
+                        listContents[title] = []; // Initialize if it doesn't exist
+                    }
+                    listContents[title].push(videoBox.outerHTML); // Store the outerHTML of the audioBox
+                      // Clear the input and hide the modal
+                    videoModal.classList.add('hidden');
+                    document.getElementById('video-upload').value = ''; // Clear the file input
+
+                       // Add event listeners for edit and delete buttons
+                   addVideoEventListeners(videoBox, videoUpload);
+
+                   } else {
+                        alert('Video content is required and a list must be selected.');
+                    }
+            });
+
+            document.getElementById('cancelVideo').addEventListener('click', () => {
+                        videoModal.classList.add('hidden');
+                        document.getElementById('noteContent').value = '';
+                    });
+            function addVideoEventListeners(videoBox, originalVideoFile) {
+                const editBtn = videoBox.querySelector('.edit-btn');
+                const deleteBtn = videoBox.querySelector('.delete-btn');
+
+                editBtn.addEventListener('click', () => {
+                    // Allow the user to upload a new video
+                    document.getElementById('video-upload').click(); // Trigger the file input click
+                    document.getElementById('video-upload').onchange = function() {
+                        const newVideoFile = this.files[0];
+                        if (newVideoFile) {
+                            const newVideo = document.createElement('video');
+                            newVideo.controls = true; // Add controls to the video element
+                            newVideo.src = URL.createObjectURL(newVideoFile); // Set the source to the uploaded file
+
+                            // Replace the old image with the new one
+                            videoBox.replaceChild(newVideo, videoBox.querySelector('video'));
+
+                            // Update the listContents with the new image link
+                            const title = activeList.textContent.trim();
+                            const index = listContents[title].indexOf(originalVideoFile.name);
+                            if (index > -1) {
+                                listContents[title][index] = newVideo.outerHTML; // Update the stored link
+                            }
+                        }
+                    };
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete this video?')) {
+                        videoBox.remove(); // Remove the video note from the display
+                        const title = activeList.textContent.trim();
+                        const index = listContents[title].indexOf(originalVideoFile.name);
+                        if (index > -1) {
+                            listContents[title].splice(index, 1); // Remove the video from the listContents
+                        }
+                    }
+                });
+            }
+            // Listeners for URL
+                document.getElementById('addUrl').addEventListener('click', () => {
+                const url = document.getElementById('url-content').value.trim(); // Get the URL input
+                if (url && activeList) { // Check if URL is provided and a list is selected
+                    const title = activeList.textContent.trim(); // Get the title from the active list
+
+                    // Create the note element
+                    const note = document.createElement('div');
+                    note.className = 'bg-blue-100 p-4 rounded shadow mb-4'; // You can customize the color
+
+                    // Create the inner HTML for the note with a clickable link
+                    note.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <a href="${url}" target="_blank" class="text-blue-600 underline">${url}</a>
+                    `;
+
+                    // Append the note to the notesContainer
+                    notesContainer.appendChild(note);
+
+                    // Store the note content in the listContents object
+                    if (!listContents[title]) {
+                        listContents[title] = []; // Initialize if it doesn't exist
+                    }
+                    listContents[title].push(url); // Add the URL to the active list
+
+                    // Clear the input and hide the modal
+                    document.getElementById('url-content').value = ''; // Clear the URL input
+                    urlModal.classList.add('hidden'); // Hide the URL modal
+
+                    addUrlEventListeners(note, url); // Add event listeners for edit and delete buttons
+
+                } else {
+                    alert('URL is required and a list must be selected.');
+                }
+            });
+
+            // Cancel URL Modal
+            document.getElementById('cancelUrl').addEventListener('click', () => {
+                urlModal.classList.add('hidden'); // Hide the URL modal
+                document.getElementById('urlContent').value = ''; // Clear the URL input
+            });
+            // Function to add event listeners for URL notes
+                function addUrlEventListeners(note, originalUrl) {
+                   const editBtn = note.querySelector('.edit-btn');
+                   const deleteBtn = note.querySelector('.delete-btn');
+
+                   editBtn.addEventListener('click', () => {
+                        // Allow the user to edit the URL
+                        document.getElementById('url-content').value = originalUrl; // Set the current URL in the input
+                        urlModal.classList.remove('hidden'); // Show the URL modal
+                   });
+
+                deleteBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this URL?')) {
+                    note.remove(); // Remove the URL note from the display
+                    const title = activeList.textContent.trim();
+                    const index = listContents[title].indexOf(originalUrl);
+                    if (index > -1) {
+                        listContents[title].splice(index, 1); // Remove the URL from the listContents
+                    }
+                }
+            });
+    }
+
+            // Listener for adding files
+            document.getElementById('addFile').addEventListener('click', () => {
+                const fileUpload = document.getElementById('file-upload').files[0];
+                if (fileUpload && activeList) { // Check if a file is selected and a list is active
+                    const title = activeList.textContent.trim(); // Get the title from the active list
+
+                    // Create the note element
+                    const fileBox = document.createElement('div');
+                    fileBox.classList.add('p-4', 'border', 'border-gray-300', 'rounded', 'mb-4');
+
+                    // Create a link for the uploaded file
+                    const fileLink = document.createElement('a');
+                    fileLink.href = URL.createObjectURL(fileUpload); // Create a URL for the file
+                    fileLink.target = '_blank'; // Open in a new tab
+                    fileLink.textContent = fileUpload.name; // Display the file name
+                    fileLink.classList.add('text-blue-600', 'underline'); // Add styles to the link
+
+                    fileBox.innerHTML = `
+                        <div class="flex justify-between items-center mb-2">
+                            <div>
+                                <button class="text-blue-500 hover:text-blue-700 edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="text-red-500 hover:text-red-700 delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                   // Append the link and actions container to the fileBox
+
+                   fileBox.appendChild(fileLink);
+
+                    // Append the fileBox to the notesContainer
+                    notesContainer.appendChild(fileBox);
+
+                    // Store the note content in the listContents object
+                    if (!listContents[title]) {
+                        listContents[title] = []; // Initialize if it doesn't exist
+                    }
+                    listContents[title].push(fileLink.outerHTML); // Store the outerHTML of the fileBox
+
+                    // Clear the input and hide the modal
+                    fileModal.classList.add('hidden');
+                    document.getElementById('file-upload').value = ''; // Clear the file input
+
+                    // Add event listeners for edit and delete buttons
+                    addFileEventListeners(fileBox, fileUpload);
+
+                } else {
+                    alert('File is required and a list must be selected.');
+                }
+            });
+
+            // Cancel File Modal
+            document.getElementById('cancelFile').addEventListener('click', () => {
+                fileModal.classList.add('hidden'); // Hide the file modal
+                document.getElementById('file-upload').value = ''; // Clear the file input
+            });
+            // Function to add event listeners for file notes
+            function addFileEventListeners(fileBox, originalFile) {
+            const editBtn = fileBox.querySelector('.edit-btn');
+            const deleteBtn = fileBox.querySelector('.delete-btn');
+
+            editBtn.addEventListener('click', () => {
+                // Allow the user to upload a new file
+                document.getElementById('file-upload').click(); // Trigger the file input click
+                document.getElementById('file-upload').onchange = function() {
+                    const newFile = this.files[0];
+                    if (newFile) {
+                        const newFileLink = document.createElement('a');
+                        newFileLink.href = URL.createObjectURL(newFile);
+                        newFileLink.target = '_blank';
+                        newFileLink.textContent = newFile.name;
+                        newFileLink.classList.add('text-grey-600', 'underline');
+
+                        // Replace the old link with the new one
+                        fileBox.replaceChild(newFileLink, fileBox.querySelector('a'));
+                        // Update the listContents with the new file link
+                        const title = activeList.textContent.trim();
+                        const index = listContents[title].indexOf(originalFile.name);
+                        if (index > -1) {
+                            listContents[title][index] = newFileLink.outerHTML; // Update the stored link
+                        }
+                    }
+                };
+            });
+
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this file?')) {
+                    fileBox.remove(); // Remove the file note from the display
+                    const title = activeList.textContent.trim();
+                    const index = listContents[title].indexOf(originalFile.name);
+                    if (index > -1) {
+                        listContents[title].splice(index, 1); // Remove the file from the listContents
+                    }
+                }
+            });
+        }
+        </script>
+       <script src="{% static 'js/notepad.js' %}" defer></script> <!-- Include the new JS file -->
+
+    </body>
+    </html>

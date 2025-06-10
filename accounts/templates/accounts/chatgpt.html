@@ -1,0 +1,30 @@
+<html>
+ <head>
+  <title>
+   Chatbot
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+ </head>
+ <body class="font-roboto bg-gray-100 flex items-center justify-center h-screen">
+  <div class="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+   <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold">
+     Chatbot
+    </h2>
+    <img alt="Chatbot icon" class="chatbot-img rounded-full" height="40" src="https://storage.googleapis.com/a1aa/image/bAKfPpIU-sVkIPdDTnXOytpyafcYiAu7-N1sIbe6KQY.jpg" width="40"/>
+   </div>
+   <div class="h-64 overflow-y-auto p-4 border border-gray-300 rounded mb-4" id="chatbox">
+    <!-- Chat messages will be loaded here -->
+   </div>
+   <div class="flex">
+    <input class="flex-1 p-2 border border-gray-300 rounded-l" id="userInput" placeholder="Savolingizni kiriting..." type="text"/>
+    <button class="bg-blue-600 text-white p-2 rounded-r" onclick="sendMessage()">
+     Yuborish
+    </button>
+   </div>
+  </div>
+ </body>
+</html>

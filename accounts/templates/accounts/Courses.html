@@ -1,0 +1,1378 @@
+            <html lang="en">
+             <head>
+                  {% load static %}
+              <meta charset="utf-8"/>
+              <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+              <title>
+               Online Courses Catalog
+              </title>
+              <script src="https://cdn.tailwindcss.com">
+              </script>
+              <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+              <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+              <style>
+               body {
+                        font-family: 'Roboto', sans-serif;
+                    }
+               img {
+                display: block; /* Make the image a block element */
+                width: auto; /* Make images responsive */
+                height: auto; /* Maintain aspect ratio */
+                margin: 0 auto 16px auto; /* Center the image and add space below */
+
+                }
+                iframe {
+                    width: 100%; /* Make PDFs responsive */
+                    height: 1200px; /* Set a fixed height for PDFs */
+                    margin-bottom: 16px; /* Add space below each PDF */
+                }
+                #quiz-section{
+                    display: block; /* Make the quiz section a block element */
+                    margin: 0 auto; /* Center the quiz section */
+                    max-width: 600px; /* Set a max width for the quiz section */
+                }
+                /*style for game matching following: */
+               /* Touch device optimizations */
+            .card {
+                background: var(--card-background);
+                padding: 1rem;
+                border-radius: 0.5rem;
+                border: 2px solid #bbbbbbe6;
+                cursor: grab;
+                transform: translateZ(0);
+                backface-visibility: hidden;
+                transition: transform var(--transition-speed) ease,
+                            box-shadow var(--transition-speed) ease,
+                            border-color var(--transition-speed) ease;
+                user-select: none;
+                touch-action: none;
+                font-size: 0.875rem;
+                border-style: dashed;
+                margin: 10px;
+            }
+            /* Accessibility improvements */
+            .card:focus {
+                outline: 2px solid var(--primary-color);
+                outline-offset: 2px;
+            }
+            /* Loading state */
+            .card.loading {
+                opacity: 0.7;
+                cursor: wait;
+            }
+
+               @media (hover: hover) {
+                .card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: var(--shadow-md);
+                }
+               }
+                .matching-game .card.error {
+                border-color: var(--error-color);
+                background-color: rgba(239, 68, 68, 0.1);
+                animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            }
+            .card.selected {
+                border-color: var(--primary-color);
+                background-color: rgba(52, 152, 219, 0.1);
+            }
+            .card.matched {
+                border-color: var(--success-color);
+                background-color: rgba(16, 185, 129, 0.1);
+                cursor: default;
+                pointer-events: none;
+            }
+                /* Responsive design */
+            @media (max-width: 768px) {
+                .game-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 1.5rem;
+                    margin: 1.5rem 0;
+                }
+
+            @keyframes shake {
+                0% { transform: translate(1px, 0); }
+                25% { transform: translate(-1px, 0); }
+                50% { transform: translate(1px, 0); }
+                75% { transform: translate(-1px, 0); }
+                100% { transform: translate(0, 0); }
+            }
+            .controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 1.5rem;
+            }
+            .button {
+                 background-color: var(--primary-color);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.375rem;
+                border: none;
+                cursor: pointer;
+                font-weight: 500;
+                transition: background-color var(--transition-speed) ease;
+
+            background-color: #2980b9;
+            }
+
+            }
+            /* Performance optimizations for animations */
+            .matched, .error {
+                will-change: transform, background-color;
+            }
+             /* Responsive design */
+               .game-container {
+                    grid-template-columns: 1fr;
+                }
+
+                .container {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0.75rem;
+                }
+
+                /* Core variables */
+            :root {
+                --primary-color: #3498db;
+            --success-color: #10b981;
+                --error-color: #ef4444;
+                --background-color: #f5f6fa;
+                --card-background: #ffffff;
+                --text-color: #2c3e50;
+                --transition-speed: 0.3s;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+                .matching-game {
+                background: var(--card-background);
+                border-radius: 0.75rem;
+                padding: 1rem;
+                box-shadow: var(--shadow-md);
+                }
+
+             /*style for game matching above: */
+              </style>
+             </head>
+             <body class="bg-gray-100">
+              <div class="container mx-auto p-4" id="app">
+               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="catalog">
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course1" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 1 thumbnail image showing a person coding on a laptop" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/1.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: Axborotni samarali izlash algoritmi
+                 </h2>
+                 <p class="text-gray-600">
+                  Ushbu kurs orqali Google qidiruv tizimida axborotni tez va oson qidirishning turli algoritmlarini o'rganing.
+                 </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course2" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 2 thumbnail image showing a data analysis chart" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/2.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: Axborotni tahrirlash texnologiyasi
+                 </h2>
+                 <p class="text-gray-600">
+                 Zamonaviy axborot tahrirlash vositalari va texnologiyalari bilan tanishing, ularni amaliy ishlarda qo'llashni o'rganing.
+                 </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course3" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 3 thumbnail image showing a person designing a website" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/3.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: Professional taqdimot yaratish
+                 </h2>
+                 <p class="text-gray-600">
+                 Ta'sirchan va professional taqdimotlarni yaratish bo'yicha ko'nikmalarni egallang. Power Point dasturida noodatiy dizayndagi taqdimotlarni yarating.
+                 </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course4" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 4 thumbnail image showing a person working on a mobile app" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/4.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: 3D effektli elektron kitob yaratish
+                 </h2>
+                 <p class="text-gray-600">
+                 3D grafikalar va animatsiyalardan foydalanib, varaqlanish effektiga ega interaktiv elektron kitoblar yaratishni o'rganing.
+                 </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course5" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 5 thumbnail image showing a person working on a cybersecurity project" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/5.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: Subtitrli va taglavhali videolar yaratish
+                 </h2>
+                 <p class="text-gray-600">
+                 O'z videolaringizni taglavha va subtitrlar qo'shish orqali yanada jozibador va tushunarli qilishni o'rganing.
+                 </p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md cursor-pointer" data-course="course6" onclick="courseFunctions.showCourse(this)">
+                 <img alt="Course 6 thumbnail image showing a person working on a machine learning project" class="w-full h-40 object-cover rounded-t-lg" height="200" src="{% static 'img/courses/6.jpg' %}" width="300"/>
+                 <h2 class="text-xl font-bold mt-2">
+                 Onlayn kurs: Youtube da ta'limiy kanal ochish va yuritish
+                 </h2>
+                 <p class="text-gray-600">
+                 Youtube da muvaffaqiyatli ta'limiy kanal ochish va yuritishning barcha bosqichlarini o'rganing, videolarni yaratish va targ'ib qilishni o'zlashtiring.
+                 </p>
+                </div>
+               </div>
+               <div class="hidden" id="course-content">
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showCatalog()">
+                 <i class="fas fa-arrow-left">
+                 </i>
+                 Kurslar katalogiga qaytish
+                </button>
+<!--1-COURSE CONTENT-->
+                <div class="hidden" id="course1">
+                     <div id="course1_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: Axborotni samarali izlash algoritmi
+                 </h1>
+             <!-- First Image -->
+                <img alt="intro image"  src="{% static 'img/courses/bin/1_course/1-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+
+                <!-- PDF File -->
+                <iframe src="{% static 'img/courses/bin/1_course/1.1.pdf' %}" ></iframe>
+
+                <!-- Second Image -->
+                <img alt="Another image related to the course" src="{% static 'img/courses/bin/1_course/1.2.jpg' %}"/>
+
+                <!-- Second PDF File -->
+                <iframe src="{% static 'img/courses/bin/1_course/1.3.pdf' %}"></iframe>
+
+                <!-- Long Image -->
+                <img alt="Long image related to the course" src="{% static 'img/courses/bin/1_course/1.4.jpg' %}" />
+
+                <!-- Quiz Section -->
+                <div id="quiz-section" class="mt-4">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course1" data-course="course1">
+                        <div>
+                                    <label>1. Eng birinchi qidiruv tizimi qaysi javobda to'g'ri ko'rsatilgan?</label><br>
+                                    <input type="radio" name="q1" value="A"> A) Archie<br>
+                                    <input type="radio" name="q1" value="B"> B) Google<br>
+                                    <input type="radio" name="q1" value="C"> C) Yandex<br>
+                                </div>
+                                <div>
+                                    <label>2. Qidiruv tizimlari qaysi variantda to'g'ri ko'rsatilgan?</label><br>
+                                    <input type="radio" name="q2" value="A"> A) Google, Yandex, Yahoo, Bing, Baidu, DuckDuckGo<br>
+                                    <input type="radio" name="q2" value="B"> B) Google, Windows, Yahoo, Powtoon<br>
+                                    <input type="radio" name="q2" value="C"> C) Google, Yandex, Windows, Bing, Delphi, Baidu, Yahoo<br>
+                                </div>
+                                <div>
+                                    <label>3. Qaysi qidiruv tizimi dastavval BackRub deb atalgan?</label><br>
+                                    <input type="radio" name="q3" value="A"> A) Google<br>
+                                    <input type="radio" name="q3" value="B"> B) Yahoo<br>
+                                    <input type="radio" name="q3" value="C"> C) Bing<br>
+                                </div>
+                                <div>
+                                    <label>4. Google qidiruv tizimi asoschilari kimlar?</label><br>
+                                    <input type="radio" name="q4" value="A"> A) Jimmy Wales va Angela Beesley<br>
+                                    <input type="radio" name="q4" value="B"> B) Larry Page va Sergey Brin<br>
+                                    <input type="radio" name="q4" value="C"> C) Bill Gates va Stiv Jobs<br>
+                                </div>
+                                <div>
+                                    <label>5. Siri ovozli qidiruv tizimi qaysi mobil operatsion tizimga o'rnatilgan?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) iOS<br>
+                                    <input type="radio" name="q5" value="B"> B) Android<br>
+                                    <input type="radio" name="q5" value="C"> C) Windows Phone<br>
+                                </div>
+                        <div id="quiz-result_course1" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+
+                            <div id="result-buttons_course1" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+                <div id="course1_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: Axborotni samarali izlash algoritmi
+                </h1>
+                <img alt="intro image" src="{% static 'img/courses/bin/1_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                <!-- Video File -->
+                <video id="module2-video" class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/1_course/2.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- PDF File -->
+                <iframe src="{% static 'img/courses/bin/1_course/2.2.pdf' %}"></iframe>
+                <img alt="Long image related to module 2" src="{% static 'img/courses/bin/1_course/2.3.jpg' %}"/>
+
+                <!-- Matching Pairs Task -->
+                <div class="container">
+                    <div id="matching-pairs" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Matching Pairs Task</h2>
+
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">Misollar</h3>
+                                <div id="terms-list_course1" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="filetype:pdf python programming" data-course-id="course1">filetype:pdf python programming</div>
+                                    <div class="card term-card" draggable="true" data-term="related: canva.com" data-course-id="course1">related: canva.com</div>
+                                    <div class="card term-card" draggable="true" data-term="site:youtube.com self-learning techniques videos" data-course-id="course1">site:youtube.com self-learning techniques videos</div>
+
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">Ta'rifi</h3>
+                                <div id="definitions-list_course1" class="cards-list">
+                                    <div class="card definition-card" data-definition="filetype:pdf python programming" data-course-id="course1">Python dasturlash bo'yicha pdf fayllarni izlash algoritmi</div>
+                                    <div class="card definition-card" data-definition="site:youtube.com self-learning techniques videos" data-course-id="course1">Mustaqil ta'lim texnikalari (self-learning techniques) bo'yicha videolarni youtube saytidan izlash algoritmi</div>
+                                    <div class="card definition-card" data-definition="related: canva.com" data-course-id="course1">canva.com saytiga ga o'xshash saytlarni izlash algoritmi </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="reset-game_course1" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course1">Qaytadan urinib ko'rish</button>
+                            <div id="score_course1" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="bonus_course1" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video id="bonus-video" class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/1_course/3.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <img alt="Long image related to bonus module" src="{% static 'img/courses/bin/1_course/3.2.jpg' %}" style="margin-top: 16px;"/>
+                 </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showPreviousModule('course1')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+            </div>
+             </div>
+<!--2-COURSE CONTENT-->
+                <div class="hidden" id="course2">
+                    <div id="course2_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: Axborotlarni tahrirlash texnologiyasi
+                 </h1>
+                    <!-- First image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/2_course/1-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/2_course/1.1.pdf' %}" ></iframe>
+                    <!-- 1.2. pdf -->
+                <iframe src="{% static 'img/courses/bin/2_course/1.2.pdf' %}" ></iframe>
+                    <!-- 1.3. PDF File -->
+                <iframe src="{% static 'img/courses/bin/2_course/1.3.pdf' %}"></iframe>
+                    <!--1.4. Image -->
+                <img alt="Long image related to the course" src="{% static 'img/courses/bin/2_course/1.4.jpg' %}" />
+                    <!-- Quiz Section -->
+                <div id="quiz-section_course2" class="mt-4" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course2" data-course="course2">
+                        <div>
+                                    <label>1. PDF fayllarni hajmini qisqartirish imkoniyatini beruvchi onlayn servislarni tanlang</label><br>
+                                    <input type="radio" name="q1" value="A"> A) ilovepdf, Smallpdf, PDF Compressor, Online2pdf, PDF zipper<br>
+                                    <input type="radio" name="q1" value="B"> B) ilovepdf, canva, moodle, prezi<br>
+                                    <input type="radio" name="q1" value="C"> C) Yandex, ilovepdf, moodle, powtoon, joyteka<br>
+                                </div>
+                                <div>
+                                    <label>2. Rasmlarni PDF faylga qanday jamlash mumkin?</label><br>
+                                    <input type="radio" name="q2" value="A"> A) Microsoft Word dasturi yordamida<br>
+                                    <input type="radio" name="q2" value="B"> B) Microsoft Print to PDF orqali<br>
+                                    <input type="radio" name="q2" value="C"> C) Microsoft Print to PDF, Microsoft Word yoki Smallpdf kabi onlayn servislar yordamida<br>
+                                </div>
+                                <div>
+                                    <label>3. PDF fayldagi kerakli varaqlarni qanday usullarda (kesib) ajratib olish mumkin?</label><br>
+                                    <input type="radio" name="q3" value="A"> A) Google Chrome kabi web brauzer orqali<br>
+                                    <input type="radio" name="q3" value="B"> B) ABBYY FineReader kabi maxsus dasturlar orqali<br>
+                                    <input type="radio" name="q3" value="C"> C) Barcha javoblar to'g'ri<br>
+                                </div>
+                                <div>
+                                    <label>4. Quyidagi dasturlarning qaysi biri matn muharriri hisoblanadi?</label><br>
+                                    <input type="radio" name="q4" value="A"> A) Microsoft Word<br>
+                                    <input type="radio" name="q4" value="B"> B) Microsoft Excel<br>
+                                    <input type="radio" name="q4" value="C"> C) Microsoft Power Point<br>
+                                </div>
+                                <div>
+                                    <label>5. Parol bilan himoyalangan PDF faylni parolini olib tashlash mumkinmi?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) yo'q, umuman olib bo'lmaydi<br>
+                                    <input type="radio" name="q5" value="B"> B) pdf fayl yaratilgan vaqtdan 3 kun o'tgach olib tashlash mumkin<br>
+                                    <input type="radio" name="q5" value="C"> C) ilovepdf kabi onlayn servislar orqali istalgan vaqtda olib tashlash mumkin<br>
+                                </div>
+                        <div id="quiz-result_course2" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+                            <div id="result-buttons_course2" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+
+                <div id="course2_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: Grafik axborotlar va rasmlar bilan ishlash
+                </h1>
+                <!--    Intro image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/2_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/2_course/2.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/2_course/2.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- PDF File -->
+                <iframe src="{% static 'img/courses/bin/2_course/2.3.pdf' %}"></iframe>
+                <!-- Matching Pairs Task -->
+                <div class="container">
+                    <div id="matching-pairs_course2" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Topshiriq: mos juftliklarni aniqlang</h2>
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">Kompyuter dasturi</h3>
+                                <div id="terms-list_course2" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="word" data-course-id="course2">
+                                        <img src="{% static 'img/courses/bin/2_course/word.jpg' %}" alt="Image 1" style="width: 50px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="gimp" data-course-id="course2">
+                                        <img src="{% static 'img/courses/bin/2_course/gimp.jpg' %}" alt="Image 2" style="width: 50px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="paintnet" data-course-id="course2">
+                                        <img src="{% static 'img/courses/bin/2_course/paintnet.jpg' %}" alt="Image 3" style="width: 30px; height: auto;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">Dastur nomi</h3>
+                                <div id="definitions-list_course2" class="cards-list">
+                                    <div class="card definition-card" data-definition="paintnet" data-course-id="course2">Paint.net</div>
+                                    <div class="card definition-card" data-definition="word" data-course-id="course2">Microsoft Word</div>
+                                    <div class="card definition-card" data-definition="gimp" data-course-id="course2">GIMP</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="reset-game_course2" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course2">Qaytadan urinib ko'rish</button>
+                            <div id="score_course2" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bonus_course2" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/2_course/3.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showPreviousModule('course2')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+                </div>
+            </div>
+<!--3-COURSE CONTENT-->
+                 <div class="hidden" id="course3">
+                    <div id="course3_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: Professional taqdimot yaratish
+                 </h1>
+                    <!-- Intro video -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/1-intro.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/3_course/1.1.pdf' %}" ></iframe>
+                    <!-- 1.2. jpg -->
+                <img alt="first image" src="{% static 'img/courses/bin/3_course/1.2.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!-- 1.3. PDF File -->
+                <iframe src="{% static 'img/courses/bin/3_course/1.3.pdf' %}"></iframe>
+                    <!--1.4. PDF File -->
+                <iframe src="{% static 'img/courses/bin/3_course/1.4.pdf' %}"></iframe>
+                    <!-- Quiz Section -->
+                <div id="quiz-section_course3" class="mt-4" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course3" data-course="course3">
+                        <div>
+                                    <label>1. Microsoft Power Point dasturi fayl kengaytmasi qaysi javobda to'g'ri ko'rsatilgan?</label><br>
+                                    <input type="radio" name="q1" value="A"> A) .doc / .docx <br>
+                                    <input type="radio" name="q1" value="B"> B) .ppt / .pptx <br>
+                                    <input type="radio" name="q1" value="C"> C) .pdf / .slide  <br>
+                                </div>
+                                <div>
+                                    <label>2. Qaysi klavishlar kombinatsiyasi yangi taqdimot faylini yaratadi?</label><br>
+                                    <input type="radio" name="q2" value="A"> A) Ctrl+N <br>
+                                    <input type="radio" name="q2" value="B"> B) Ctrl+M <br>
+                                    <input type="radio" name="q2" value="C"> C) Ctrl+Y <br>
+                                </div>
+                                <div>
+                                    <label>3. Qaysi klavishlar kombinatsiyasi joriy slayddan boshlab taqdimotni namoyish etishga mo'ljallangan?</label><br>
+                                    <input type="radio" name="q3" value="A"> A) Shift+F5 <br>
+                                    <input type="radio" name="q3" value="B"> B) F5 <br>
+                                    <input type="radio" name="q3" value="C"> C) Ctrl+L <br>
+                                </div>
+                                <div>
+                                    <label>4. Dizayn nuqtai nazaridan 1 ta tqdimotda nechtadan ortiq ranglardan foydalanish tavsiya etilmaydi?</label><br>
+                                    <input type="radio" name="q4" value="A"> A) 2-3 tadan ortiq <br>
+                                    <input type="radio" name="q4" value="B"> B) 5-6 tadan oshib ketmasligi kerak <br>
+                                    <input type="radio" name="q4" value="C"> C) 10 tadan ortiq <br>
+                                </div>
+                                <div>
+                                    <label>5. Taqdimotga yangi bo'sh slayd qo'shish uchun qaysi tezkor tugma kombinatsiyasidan foydalaniladi?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) Ctrl+N <br>
+                                    <input type="radio" name="q5" value="B"> B) Ctrl+BS <br>
+                                    <input type="radio" name="q5" value="C"> C) Ctrl+M <br>
+                                </div>
+                        <div id="quiz-result_course3" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+                            <div id="result-buttons_course3" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+
+                <div id="course3_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: Kreativ Power Point taqdimotlarini yaratish
+                </h1>
+                <!--    Intro image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/3_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/3_course/2.1.pdf' %}" ></iframe>
+                    <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.3.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.4.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.5.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.6.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/3_course/2.7.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Matching game Task -->
+             <div class="container">
+                    <div id="matching-pairs_course3" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Topshiriq: mos juftliklarni aniqlang</h2>
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">Taqdimot slaydlari</h3>
+                                <div id="terms-list_course3" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="dont_1" data-course-id="course3">
+                                        <img src="{% static 'img/courses/bin/3_course/dont_1.jpg' %}" alt="Image 1" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="do_1" data-course-id="course3">
+                                        <img src="{% static 'img/courses/bin/3_course/do_1.jpg' %}" alt="Image 2" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="dont_2" data-course-id="course3">
+                                        <img src="{% static 'img/courses/bin/3_course/dont_2.jpg' %}" alt="Image 3" style="width: 200px; height: auto;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">Yutuq yoki kamchiliklari</h3>
+                                <div id="definitions-list_course3" class="cards-list">
+                                    <div class="card definition-card" data-definition="dont_1" data-course-id="course3">Slayddagi matn ortiqcha yuklangan va bo'sh joy yetarli emas</div>
+                                    <div class="card definition-card" data-definition="do_1" data-course-id="course3">Kalit so'zlarga e'tibor qaratib, vizual bo'shliqlar qoldirish kerak</div>
+                                    <div class="card definition-card" data-definition="dont_2" data-course-id="course3">Slayddagi elementlarni guruhlash va tekislashlarsiz birlashtirmaslik kerak</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="controls">
+                            <button id="reset-game_course3" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course3">Qaytadan urinib ko'rish</button>
+                            <div id="score_course3" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bonus_course3" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/3_course/3.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/3_course/3.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showPreviousModule('course3')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+                </div>
+            </div>
+
+                <div class="hidden" id="course4">
+                    <div id="course4_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: 3D effektli elektron kitob yaratish
+                 </h1>
+                    <!-- First image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/4_course/1-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/4_course/1.1.pdf' %}" ></iframe>
+                    <!--1.2. Image -->
+                <img alt="Image related to the course" src="{% static 'img/courses/bin/4_course/1.2.jpg' %}" />
+                    <!-- 1.3. PDF File -->
+               <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/4_course/1.3.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                    <!-- Quiz Section -->
+                <div id="quiz-section_course4" class="mt-4" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course4" data-course="course4">
+                        <div>
+                                    <label>1. FlipPdf dasturi qaysi turdagi faylni flipbookga aylantiradi?</label><br>
+                                    <input type="radio" name="q1" value="A"> A) .pdf <br>
+                                    <input type="radio" name="q1" value="B"> B) .word <br>
+                                    <input type="radio" name="q1" value="C"> C) .mp4 <br>
+                                </div>
+                                <div>
+                                    <label>2. FlipPdf dasturidagi "Apply change" tugmasi nimaga mo'ljallangan?</label><br>
+                                    <input type="radio" name="q2" value="A"> A) Flipbook sozlamalaridagi o'zgartirishlarni qo'llash uchun <br>
+                                    <input type="radio" name="q2" value="B"> B) Dasturga pdf ni yuklash, ya'ni import qilish uchun <br>
+                                    <input type="radio" name="q2" value="C"> C) Temalarni tanlash uchun <br>
+                                </div>
+                                <div>
+                                    <label>3. FlipPdf dasturi asosan qaysi platformada ishlashga mo'ljallangan?</label><br>
+                                    <input type="radio" name="q3" value="A"> A) Asosan, Windows operatsion tizimi, shuningdek MacOS<br>
+                                    <input type="radio" name="q3" value="B"> B) Asosan, Android va iOS mobil operatsion tizimlarida <br>
+                                    <input type="radio" name="q3" value="C"> C) iOS mobil operatsion tizimi va web platformada <br>
+                                </div>
+                                <div>
+                                    <label>4. Quyidagi dasturlarning qaysi biri Flipbook yaratishga mo'ljallangan?</label><br>
+                                    <input type="radio" name="q4" value="A"> A) Microsoft Word<br>
+                                    <input type="radio" name="q4" value="B"> B) Fotor<br>
+                                    <input type="radio" name="q4" value="C"> C) FlipPdf<br>
+                                </div>
+                                <div>
+                                    <label>5. FlipPdf dasturida tayyorlangan flipbookni .exe formatida nashr etsa bo'ladimi?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) Ha, mumkin <br>
+                                    <input type="radio" name="q5" value="B"> B) Yo'q, dastur bunday imkoniyatga ega emas <br>
+                                    <input type="radio" name="q5" value="C"> C) Faqat arxivlangan videoli flipbooklarni nashr etish mumkin <br>
+                                </div>
+                        <div id="quiz-result_course4" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+                            <div id="result-buttons_course4" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+                <div id="course4_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: 3D elektron kitob yaratishning amaliy asoslari
+                </h1>
+                <!--    Intro image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/4_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                     <!--2.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/4_course/2.1.pdf' %}" ></iframe>
+                     <!-- 2.2. Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/4_course/2.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!--    2.3. image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/4_course/2.3.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                <!-- Matching Pairs Task -->
+                <div class="container">
+                    <div id="matching-pairs_course4" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Topshiriq: mos juftliklarni aniqlang</h2>
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">Rasm</h3>
+                                <div id="terms-list_course4" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="SignIn" data-course-id="course4">
+                                        <img src="{% static 'img/courses/bin/4_course/SignIn.jpg' %}" alt="Image 1" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="fromScratch" data-course-id="course4">
+                                        <img src="{% static 'img/courses/bin/4_course/fromscratch.jpg' %}" alt="Image 2" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="uploadPdf" data-course-id="course4">
+                                        <img src="{% static 'img/courses/bin/4_course/uploadpdf.jpg' %}" alt="Image 3" style="width: 200px; height: auto;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">Izohi</h3>
+                                <div id="definitions-list_course4" class="cards-list">
+                                    <div class="card definition-card" data-definition="uploadPdf" data-course-id="course4">Flipbook yaratish uchun PDF file ni yuklash tugmasi </div>
+                                    <div class="card definition-card" data-definition="SignIn" data-course-id="course4">Tizim(Flipsnack)ga kirish tugmasi</div>
+                                    <div class="card definition-card" data-definition="fromScratch" data-course-id="course4">Flipbookni noldan yaratish tugmasi</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="reset-game_course4" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course2">Qaytadan urinib ko'rish</button>
+                            <div id="score_course4" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bonus_course4" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                     <!--3.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/4_course/3.1.pdf' %}" ></iframe>
+                </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showPreviousModule('course4')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+                </div>
+            </div>
+<!--COURSE 5 CONTENT    -->
+            <div class="hidden" id="course5">
+                <div id="course5_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: Caption video yaratish
+                 </h1>
+                    <!-- First image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/5_course/1-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/5_course/1.1.pdf' %}" ></iframe>
+                    <!-- 1.2. image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/5_course/1.2.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!-- 1.3. PDF File -->
+                <iframe src="{% static 'img/courses/bin/5_course/1.3.pdf' %}"></iframe>
+                    <!--1.4. Image -->
+                <img alt="Long image related to the course" src="{% static 'img/courses/bin/5_course/1.4.jpg' %}" />
+                    <!-- Quiz Section -->
+                <div id="quiz-section_course5" class="mt-4" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course5" data-course="course5">
+                        <div>
+                                    <label>1. Caption video bu....</label><br>
+                                    <input type="radio" name="q1" value="A"> A) Ovozsiz rejimda ham ko'rish uchun qulay, taglavha va subtitrlardan iborat video<br>
+                                    <input type="radio" name="q1" value="B"> B) faqat musiqa jo'rligida namoyish etiladigan video<br>
+                                    <input type="radio" name="q1" value="C"> C) videodan kesib olingan film treyleri <br>
+                                </div>
+                                <div>
+                                    <label>2. Caption, ya'ni taglavhalar ....</label><br>
+                                    <input type="radio" name="q2" value="A"> A) videoda ovozni eshitadigan, ammo tilni tushunmaydigan tomoshabinlar uchun mo'ljallangan  <br>
+                                    <input type="radio" name="q2" value="B"> B) videodagi ovozni eshitmaydigan tomoshabinlar uchun mo'ljallangan <br>
+                                    <input type="radio" name="q2" value="C"> C) video mualliflarini ko'rsatish uchun mo'ljallangan <br>
+                                </div>
+                                <div>
+                                    <label>3. Subtitrlar....</label><br>
+                                    <input type="radio" name="q3" value="A"> A) videoda ovozni eshitadigan, ammo tilni tushunmaydigan tomoshabinlar uchun mo'ljallangan<br>
+                                    <input type="radio" name="q3" value="B"> B) videodagi ovozni eshitmaydigan tomoshabinlar uchun mo'ljallangan<br>
+                                    <input type="radio" name="q3" value="C"> C) videodagi nutqdan boshqa faqat tovushlarni ifodalash uchun mo'ljallangan<br>
+                                </div>
+                                <div>
+                                    <label>4. Qaysi rasmda subtitr namunasi keltirilgan?</label><br>
+                                    <div class="cards-container" style="margin-right: 20px; display: flex; flex-direction: row; gap: 10px;">
+                                        <div class="card"  data-course="course5">
+                                            <img src="{% static 'img/courses/bin/5_course/CCap2.jpg' %}" alt="1-image" style="width: 200px; height: auto;"/>
+                                        </div>
+                                        <div class="card"  data-course="course5">
+                                            <img src="{% static 'img/courses/bin/5_course/CCap1.jpg' %}" alt="2-image" style="width: 200px; height: auto;"/>
+                                        </div>
+                                        <div class="card" data-course="course5">
+                                            <img src="{% static 'img/courses/bin/5_course/CCap.jpg' %}" alt="3-image" style="width: 200px; height: auto;"/>
+                                        </div>
+                                    </div>
+                                    <input type="radio" name="q4" value="A"> A) 1-rasmda <br>
+                                    <input type="radio" name="q4" value="B"> B) 2-rasmda <br>
+                                    <input type="radio" name="q4" value="C"> C) 3-rasmda <br>
+                                </div>
+                                <div>
+                                    <label>5. Odatda caption video davomiyligi qancha bo'ladi?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) 1-3 daqiqa <br>
+                                    <input type="radio" name="q5" value="B"> B) 15-20 daqiqa <br>
+                                    <input type="radio" name="q5" value="C"> C) 1-2 soat <br>
+                                </div>
+                        <div id="quiz-result_course5" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+                            <div id="result-buttons_course5" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+                <div id="course5_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: Videoga taglavha va subtitr qo'shish
+                </h1>
+                <!--    Intro image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/5_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                    <!-- 2.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/5_course/2.1.pdf' %}"></iframe>
+                <!-- Video File -->
+                <video class="video" controls style="width: 100%; height: auto;">
+                    <source src="{% static 'img/courses/bin/5_course/2.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- PDF File -->
+                <iframe src="{% static 'img/courses/bin/5_course/2.3.pdf' %}"></iframe>
+                <!-- Matching Pairs Task -->
+                <div class="container">
+                    <div id="matching-pairs_course5" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Topshiriq: mos juftliklarni aniqlang</h2>
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">Namunalar</h3>
+                                <div id="terms-list_course5" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="sub" data-course-id="course5">
+                                        <img src="{% static 'img/courses/bin/5_course/subtitle_uzb.jpg' %}" alt="Image 1" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="cc" data-course-id="course5">
+                                        <img src="{% static 'img/courses/bin/5_course/caption_uzb.jpg' %}" alt="Image 2" style="width: 200px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="sub2" data-course-id="course5">
+                                        <img src="{% static 'img/courses/bin/5_course/subtitle_2_uzb.jpg' %}" alt="Image 3" style="width: 200px; height: auto;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">Taglavha yoki subtitr</h3>
+                                <div id="definitions-list_course5" class="cards-list">
+                                    <div class="card definition-card" data-definition="sub2" data-course-id="course5">Subtitrli videodan namuna</div>
+                                    <div class="card definition-card" data-definition="cc" data-course-id="course5">Taglavhali videodan namuna</div>
+                                    <div class="card definition-card" data-definition="sub" data-course-id="course5">Subtitrlarni turli tillarga tarjima qilish</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="reset-game_course5" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course2">Qaytadan urinib ko'rish</button>
+                            <div id="score_course5" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bonus_course5" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!--    3.1 image -->
+                <img alt="image" src="{% static 'img/courses/bin/5_course/3.1.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/5_course/3.2.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="coursFunctions.showPreviousModule('course5')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+                </div>
+            </div>
+<!--6-COURSE CONTENT -->
+                   <div class="hidden" id="course6">
+                    <div id="course6_module1" class="module">
+                 <h1 class="text-3xl font-bold text-center my-4">
+                  Onlayn kurs: YouTube kanal yaratish
+                 </h1>
+                    <!-- First image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/6_course/1-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block"/>
+                    <!--1.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/1.1.pdf' %}" ></iframe>
+                    <!--1.2. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/1.2.pdf' %}" ></iframe>
+                    <!--1.3. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/1.3.pdf' %}" ></iframe>
+                    <!--1.4. Image -->
+                <img alt="Image related to the course" src="{% static 'img/courses/bin/6_course/1.4.jpg' %}" />
+                    <!-- Quiz Section -->
+                <div id="quiz-section_course6" class="mt-4" style="max-width: 600px; margin: 0 auto;">
+                    <h3 class="text-2xl font-bold text-center">Test</h3>
+                    <form id="quiz-form_course6" data-course="course4">
+                        <div>
+                                    <label>1. YouTube bu....</label><br>
+                                    <input type="radio" name="q1" value="A"> A) videoxosting <br>
+                                    <input type="radio" name="q1" value="B"> B) qidiruv tizimi  <br>
+                                    <input type="radio" name="q1" value="C"> C) internet provayder <br>
+                                </div>
+                                <div>
+                                    <label>2. Youtube qachon tashkil etilgan?</label><br>
+                                    <input type="radio" name="q2" value="A"> A) 2005-yil fevral oyida <br>
+                                    <input type="radio" name="q2" value="B"> B) 2003-yil fevral oyida <br>
+                                    <input type="radio" name="q2" value="C"> C) 2000-yil yanvar oyida <br>
+                                </div>
+                                <div>
+                                    <label>3. YouTube da kuniga o'rtacha qancha o'quv filmlari tomosha qilinadi?</label><br>
+                                    <input type="radio" name="q3" value="A"> A) 1 mln gacha<br>
+                                    <input type="radio" name="q3" value="B"> B) 500-700 ming atrofida <br>
+                                    <input type="radio" name="q3" value="C"> C) milliarddan ziyod <br>
+                                </div>
+                                <div>
+                                    <label>4. Youtubega kim tomonidan eng birinchi 18 sekundlik video joylashtirilgan?</label><br>
+                                    <input type="radio" name="q4" value="A"> A) Javed Karim<br>
+                                    <input type="radio" name="q4" value="B"> B) Larry Page va Sergey Brin<br>
+                                    <input type="radio" name="q4" value="C"> C) Bill Gates<br>
+                                </div>
+                                <div>
+                                    <label>5. YouTube asoschilari kim?</label><br>
+                                    <input type="radio" name="q5" value="A"> A) Stiv Chen, Chad Xedli va Javed Karim  <br>
+                                    <input type="radio" name="q5" value="B"> B) Stiv Jobs, Sergey Brin va Stiv Voznyak <br>
+                                    <input type="radio" name="q5" value="C"> C) Larry Page va  Bill Gates <br>
+                                </div>
+                        <div id="quiz-result_course6" class="mt-2 hidden"></div>
+                        <div class="flex justify-between mt-4">
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Testni tugatish</button>
+                            <div id="result-buttons_course6" class="flex space-x-2"></div>
+                        </div>
+                    </form>
+               </div>
+                </div>
+
+                <div id="course6_module2" class="module hidden">
+                <h1 class="text-3xl font-bold text-center my-4">
+                    2-Modul: Youtube da kanal yuritish
+                </h1>
+                <!--    Intro image -->
+                <img alt="intro image" src="{% static 'img/courses/bin/6_course/2-intro.jpg' %}" style="width: auto; margin: 0 auto 16px; display: block;"/>
+                     <!--2.1. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/2.1.pdf' %}" ></iframe>
+                     <!-- 2.2. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/2.2.pdf' %}" ></iframe>
+                     <!-- 2.3. PDF File -->
+                <iframe src="{% static 'img/courses/bin/6_course/2.3.pdf' %}" ></iframe>
+                    <!-- Matching Pairs Task -->
+                <div class="container">
+                    <div id="matching-pairs_course6" class="matching-game">
+                        <h2 style="text-align: center; font-weight: bolder; font-size: x-large; color: #434c91;">Topshiriq: mos juftliklarni aniqlang</h2>
+                        <div class="game-container">
+                            <div class="terms-container">
+                                <h3 style="text-align: center; font-weight: bold">YouTube asoschilari rasmlari</h3>
+                                <div id="terms-list_course6" class="cards-list">
+                                    <div class="card term-card" draggable="true" data-term="jawed" data-course-id="course6">
+                                        <img src="{% static 'img/courses/bin/6_course/jawed.jpg' %}" alt="Image 1" style="width: 100px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="chad" data-course-id="course6">
+                                        <img src="{% static 'img/courses/bin/6_course/chad.jpg' 5}' %}" alt="Image 2" style="width: 100px; height: auto;"/>
+                                    </div>
+                                    <div class="card term-card" draggable="true" data-term="steve" data-course-id="course6">
+                                        <img src="{% static 'img/courses/bin/6_course/steve.jpg' %}" alt="Image 3" style="width: 100px; height: auto;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="definitions-container">
+                                <h3 style="text-align: center; font-weight: bold">YouTube asoschilari ismi</h3>
+                                <div id="definitions-list_course6" class="cards-list">
+                                    <div class="card definition-card" data-definition="steve" data-course-id="course6">Steve Chen</div>
+                                    <div class="card definition-card" data-definition="jawed" data-course-id="course6">Jawed Karim</div>
+                                    <div class="card definition-card" data-definition="chad" data-course-id="course6">Chad Hurley</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button id="reset-game_course6" class="reset-game bg-indigo-600 text-white px-4 py-2 rounded-lg mb-4 ml-2" data-course="course2">Qaytadan urinib ko'rish</button>
+                            <div id="score_course6" class="score text-center m-2 w-50">Mosliklar soni: 0/3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bonus_course6" class="hidden bonus">
+                    <h1 class="text-3xl font-bold text-center my-4">
+                    Bonus Modul
+                </h1>
+                    <!--Bonus  Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/mission_impossible.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                     <!--3.1. Video File -->
+                <video class="video" controls style="width: 100%; height: auto; margin: 16px 0;">
+                    <source src="{% static 'img/courses/bin/6_course/3.1.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                 </div>
+                 <!-- Previous Button -->
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4" onclick="courseFunctions.showPreviousModule('course6')">
+                    <i class="fas fa-arrow-left"></i>
+                    Oldingi modulga qaytish
+                </button>
+                </div>
+            </div>
+               </div>
+              </div>
+              </div>
+              <script>
+
+                 let courseId; // Declare a variable to hold the current course ID
+
+                 function showCourse(element) {
+                    courseId = element.getAttribute('data-course');
+                    const courseDiv = document.getElementById(courseId);
+
+                    // Check if courseDiv exists
+                    if (!courseDiv) {
+                        console.error(`Course with ID ${courseId} not found.`);
+                        return; // Exit the function if the course div is not found
+                    }
+
+                    document.getElementById('catalog').classList.add('hidden');
+                    document.getElementById('course-content').classList.remove('hidden');
+                    document.querySelectorAll('#course-content > div').forEach(div => div.classList.add('hidden'));
+                    courseDiv.classList.remove('hidden');
+                      // Call the function to handle quiz submission for the current course
+                    handleQuizSubmission(courseId);
+                }
+                // Function to handle quiz submission
+                function handleQuizSubmission(courseId) {
+                    const quizForm = document.getElementById(`quiz-form_${courseId}`);
+                    const answers = {
+                        course1: ['A', 'A', 'A', 'B', 'A'],
+                        course2: ['A', 'C', 'C', 'A', 'C'],
+                        course3: ['B', 'A', 'A', 'A', 'C'],
+                        course4: ['A', 'A', 'A', 'C', 'A'],
+                        course5: ['A', 'B', 'A', 'C', 'A'],
+                        course6: ['A', 'A', 'C', 'A', 'A']
+
+                        // Add answers for other courses here
+                    };
+
+                quizForm.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the form from submitting normally
+                   let score = 0;
+
+                        for (let i = 1; i <= 5; i++) {
+                            const userAnswer = this['q' + i].value;
+                            if (userAnswer === answers[courseId][i - 1]) {
+                                    score++;
+                            }
+                        }
+
+                    const resultDiv = document.getElementById(`quiz-result_${courseId}`);
+                        resultDiv.classList.remove('hidden');
+                        resultDiv.innerHTML = `<strong style="font-size: 1.5rem;">Siz 5 ta savoldan ${score} tasiga to'g'ri javob berdingiz.`;
+
+                        const resultButtonsDiv = document.getElementById(`result-buttons_${courseId}`);
+                        resultButtonsDiv.innerHTML = ''; // Clear previous buttons
+
+                        if (score > 2) {
+                            resultButtonsDiv.innerHTML += `<button onclick="courseFunctions.nextCourse_Module('${courseId}')" class="bg-green-500 text-white px-4 py-2 rounded-lg">Keyingi Modul <i class="fas fa-arrow-right"></i></button>`;
+                        } else {
+                            resultButtonsDiv.innerHTML += `<button onclick="courseFunctions.retakeQuiz('${courseId}')" class="bg-red-500 text-white px-4 py-2 rounded-lg">Qayta topshirish</button>`;
+                        }
+                    });
+                }
+
+                    function showCatalog() {
+                        document.getElementById('catalog').classList.remove('hidden');
+                        document.getElementById('course-content').classList.add('hidden');
+                    }
+
+                // Function to pause all videos
+                function pauseAllVideos() {
+                    const videos = document.querySelectorAll('.video');
+                    videos.forEach(video => {
+                        video.pause(); // Pause each video
+                        video.currentTime = 0; // Optionally reset the video to the start
+                    });
+                }
+
+
+                function nextCourse_Module(courseId) {
+                // Pause all videos
+                pauseAllVideos();
+               // Select the currently visible module
+                const currentModule = document.querySelector(`#${courseId} .module:not(.hidden)`);
+
+                if (currentModule) {
+                    currentModule.classList.add('hidden'); // Hide the current module
+                    const nextModule = currentModule.nextElementSibling; // Get the next sibling module
+
+                    // Check if the next module exists and is a module
+                    if (nextModule && nextModule.classList.contains('module')) {
+                        nextModule.classList.remove('hidden'); // Show the next module
+                        window.scrollTo(0, 0);
+                    } else {
+                        alert('No more modules available.'); // Alert if there are no more modules
+                    }
+                }
+            }
+                function showPreviousModule(courseId) {
+                    // Pause all videos
+                    pauseAllVideos();
+                    const currentModule = document.querySelector(`#${courseId} > div:not(.hidden)`); // Select the currently visible module
+                    if (currentModule) {
+                    currentModule.classList.add('hidden'); // Hide the current module
+                    const previousModule = currentModule.previousElementSibling; // Get the previous sibling module
+                    if (previousModule) {
+                        previousModule.classList.remove('hidden'); // Show the previous module
+                        window.scrollTo(0, 0); // Scroll to the top of the page
+                    } else {
+                        alert('No more modules available.'); // Alert if there are no more modules
+                    }
+                }
+            }
+
+                function retakeQuiz(courseId) {
+                    // Logic to reset the quiz
+                    const quizForm = document.getElementById(`quiz-form_${courseId}`); // Get the quiz form for the specific course
+                    const resultDiv = document.getElementById(`quiz-result_${courseId}`); // Get the result div for the specific course
+                    const resultButtonsDiv = document.getElementById(`result-buttons_${courseId}`);
+                    // Reset the quiz form
+                    quizForm.reset();
+                    resultDiv.classList.add('hidden'); // Hide the result div
+                    resultButtonsDiv.innerHTML = ''; // Clear previous buttons
+                    resultDiv.innerHTML = ''; // Reset the score display
+                }
+                // Script for game matching
+                document.addEventListener('DOMContentLoaded', () => {
+                const matchingGame = {
+                    selectedTerm: null,
+                    matches: {},
+                    isProcessing: false,
+
+                    init() {
+                        this.bindEventListeners();
+                        this.setupDragAndDrop();
+                    },
+
+                    bindEventListeners() {
+                         // Event delegation for better performance
+                document.querySelector('.game-container').addEventListener('click', (e) => {
+                    if (this.isProcessing) return;
+
+                    const card = e.target.closest('.card');
+                    if (!card) return;
+
+                    if (card.classList.contains('term-card')) {
+                        this.handleTermSelection(card);
+                    } else if (card.classList.contains('definition-card')) {
+                        this.handleDefinitionSelection(card);
+                    }
+                });
+
+                // Bind event listeners to all reset buttons
+                document.querySelectorAll('.reset-game').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const courseId = e.target.getAttribute('data-course'); // Get the course ID from the button
+                        this.resetGame(courseId); // Pass the course ID to the reset function
+                    });
+                });
+            },
+
+                    setupDragAndDrop() {
+                        const terms = document.querySelectorAll('.term-card');
+                        const definitions = document.querySelectorAll('.definition-card');
+
+                        terms.forEach(term => {
+                            term.addEventListener('dragstart', (e) => {
+                                this.selectedTerm = term; // Store the selected term
+                                e.dataTransfer.setData('text/plain', term.dataset.term);
+                            });
+
+                            term.addEventListener('dragend', () => {
+                                this.selectedTerm = null; // Clear selection on drag end
+                            });
+                        });
+
+                        definitions.forEach(def => {
+                            def.addEventListener('dragover', (e) => {
+                                e.preventDefault(); // Allow drop
+                            });
+
+                            def.addEventListener('drop', (e) => {
+                                e.preventDefault();
+                                const termId = e.dataTransfer.getData('text/plain');
+                                const term = document.querySelector(`[data-term="${termId}"]`);
+                                if (term && def.dataset.definition === termId) {
+                                    this.handleMatch(term, def);
+                                } else {
+                                    this.handleMismatch(term, def);
+                                }
+                            });
+                        });
+                    },
+
+                    handleTermSelection(term) {
+                        if (term.classList.contains('matched')) return;
+
+                        if (this.selectedTerm) {
+                            this.selectedTerm.classList.remove('selected');
+                        }
+
+                        term.classList.add('selected');
+                        this.selectedTerm = term;
+                    },
+
+                    handleDefinitionSelection(definition) {
+                        if (!this.selectedTerm || definition.classList.contains('matched')) return;
+
+                        if (this.selectedTerm.dataset.term === definition.dataset.definition) {
+                            this.handleMatch(this.selectedTerm, definition);
+                        } else {
+                            this.handleMismatch(this.selectedTerm, definition);
+                        }
+                    },
+
+                    handleMatch(term, definition) {
+                    this.isProcessing = true;
+                    term.classList.remove('selected');
+                    term.classList.add('matched');
+                    definition.classList.add('matched');
+
+                    // Get the current course ID
+                    //const courseId = term.dataset.courseId;
+
+                    // Initialize matches for the current course if it doesn't exist
+                    if (!this.matches[courseId]) {
+                        this.matches[courseId] = 1;
+                    } else {
+                        this.matches[courseId]++;
+                        console.log('matches:', this.matches)
+
+
+                    }
+
+                    this.updateScore(courseId);
+                    this.selectedTerm = null;
+                    this.isProcessing = false;
+                    // Check if all pairs are matched
+                    if (this.matches[courseId] === 3) { // Assuming there are 3 pairs
+                        let bonusModule = document.querySelector(`.bonus[id^="bonus_${courseId}"]`);
+                        console.log('handlematch:', bonusModule)
+                        if (bonusModule) {
+                            bonusModule.classList.remove('hidden'); // Show the bonus module
+                                  }
+                    }
+                },
+
+                    handleMismatch(term, definition) {
+                        this.isProcessing = true;
+                        term.classList.add('error');
+                        definition.classList.add('error');
+
+                        setTimeout(() => {
+                            term.classList.remove('selected');
+                            term.classList.remove('error');
+                            definition.classList.remove('error');
+                            this.selectedTerm = null;
+                            this.isProcessing = false;
+                        }, 1000);
+                    },
+
+                   updateScore(courseId) {
+                    const scoreElement = document.getElementById(`score_${courseId}`);
+                    console.log('scoreElement:', scoreElement)
+                    if (scoreElement) {
+                        scoreElement.textContent = `Mosliklar soni: ${this.matches[courseId] || 0}/3`; // Update the score display
+                    }
+                },
+
+                    resetGame(courseId) {
+                        const cards = document.querySelectorAll(`#${courseId} .card`); // Select cards for the specific course
+                        cards.forEach(card => {
+                            card.classList.remove('selected', 'matched', 'error');
+                        });
+                        // Hide the corresponding bonus module
+                        let bonusModule = document.querySelector(`.bonus[id^="bonus_${courseId}"]`);
+                        if (bonusModule) {
+                            bonusModule.classList.add('hidden');
+                        }
+                        this.selectedTerm = null;
+                        this.matches[courseId] = 0; // Reset matches for the specific course
+                        this.isProcessing = false;
+                         // Reset score display for the specific course
+                        const scoreElement = document.getElementById(`score_${courseId}`);
+                        if (scoreElement) {
+                            scoreElement.textContent = `Mosliklar soni: 0/3`; // Reset score display
+                        }else {
+                        console.error(`Score element not found for course ID: ${courseId}`); // Log an error if not found
+            }
+
+                    }
+                };
+
+                // Initialize the game
+                matchingGame.init();
+
+                // Add touch event support
+                if ('ontouchstart' in window) {
+                    document.querySelectorAll('.card').forEach(card => {
+                        card.addEventListener('touchstart', (e) => {
+                            e.preventDefault();
+                            card.click();
+                        });
+                    });
+                }
+            });
+               // Script for game matching
+
+              </script>
+             </body>
+            </html>

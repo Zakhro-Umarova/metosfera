@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<title>site</title>
+</head>
+<body>
+	<header id="header" class="header">
+		<div class="container">
+			<div class="nav">
+				<img src="{% static 'img/logo.svg' %}" alt="I learn IT" class="logo">
+				<ul class="menu">
+					<li>
+						<a href="#">
+							Bosh sahifa
+						</a>
+					</li>
+					<li>
+						<a href="#about">
+							Biz haqimizda
+						</a>
+					</li>
+					<li>
+						<a href="#course">
+							Kurslar
+						</a>
+					</li>
+				</ul>
+				<div class="user-data">
+					<a href="#">
+						<img src="{% static 'img/lang.png' %}" alt="uz"id="lang" class="lang">
+					</a>
+					<a href="accounts/login" class="sign-in" target="blank">
+						Kirish
+					</a>
+					<a href="accounts/register" class="sign-up-btn" target="blank">	<span>
+							Ro'yxatdan o'tish
+						</span>
+					</a>
+				</div>
+			</div>
+			<div class="wrapper">
+				<div class="offer">
+					<h1 class="offer-title">
+						Mustaqil ta'lim portali
+					</h1>
+					<p class="offer-text">
+						XXI asr AKT ga doir bilimlarni egallashning ayni vaqti. AKT ta’lim kurslari - bu muvaffaqiyatga erishish kalitidir. Muvaffaqiyatli kelajak uchun <br>mustaqil ta’lim olishni boshlang.
+					</p>
+					<div class="active">
+					<a href="#" class="btn">
+						<span>
+							Hoziroq boshlash
+						</span>
+					</a>
+					</div>
+				</div>
+				<img src="{% static 'img/header-bg.png'%}" alt="student" class="offer-image">
+			</div>
+			<!-- <div href="#next content" class=" animated infinite bounce">
+			  			<a href="#next-content" class="down">
+							<i class="fa fa-chevron-circle-down fa-5x"></i>
+			  			 </a>
+			</div>	 -->
+		</div>
+	</header>
+	<section id="about" class="about">
+		<div class="container">
+		<div class="wrap">
+			<img src="{% static 'img/about-img.png'%} " alt="self learning" class="about-img">
+			<div class="section-block">
+					<h2 class="section-title">
+						Universitet tashqarisida ham ta’lim davom etmoqda
+					</h2>
+					<p class="section-text">
+						Bizning maqsadimiz talabalarni faol mustaqil ta'lim jarayoniga jalb qilishdir. Sinf xonalari chegaralari yumshatilib, talabalar istalgan vaqtda va istalgan joyda, qulay muhitda <br> mustaqil ta’lim oladilar.
+					</p>
+					<a href="#" class="btn about-btn">
+						<span>
+							Batafsil
+						</span>
+					</a>
+			</div>
+		</div>
+		</div>
+	</section>
+	<section id="course" class="course">
+		<div class="container">
+			<h2 class="section-title center-title">
+				Bizning kurslarimiz
+			</h2>
+			<div class="cards">
+				<div class="card">
+					<img src="{% static 'img/course-img1.jpg'%} " alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							Dasturlash
+						</h3>
+						<p class="course-descrip">
+							Dasturlashni hozirdan boshlang ... Bugungi kunda dasturlash qobiliyatlariga bo’lgan talab juda yuqori.
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+
+					<div class="author">
+						<img src="{% static 'img/Jo-Black.jpg'%}" alt="" class="teacher">
+						<h4 class="teacher-FIO">Jo Black</h4>
+					</div>
+					</div>
+				<div class="card">
+					<img src="{% static 'img/course-img2.jpg'%}" alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							Caption videoni qanday suratga olish kerak
+						</h3>
+						<p class="course-descrip">
+							Caption video suratga olish va tahrirlash bo'yicha ushbu qo'llanmani bajaring...
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+
+					<div class="author">
+						<img src="{% static 'img/Jennifer-Lee.jpg'%}" alt="" class="teacher">
+						<h4 class="teacher-FIO">Jennifer Lee</h4>
+					</div>
+					</div>
+				<div class="card">
+					<img src="{% static 'img/course-img3.jpg'%}" alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							Kompyuter grafikasi
+						</h3>
+						<p class="course-descrip">
+							Fotoshop, Corel Draw va Illustrator dasturlarini plakatlar, logotiplar va boshqalarni yaratish orqali o'rganing.
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+
+					<div class="author">
+						<img src="{% static ' img/Cristina-Eaton.jpg'%}" alt="" class="teacher">
+						<h4 class="teacher-FIO">Cristina Eaton</h4>
+					</div>
+				</div>
+			</div>
+
+			<div class="cards">
+				<div class="card">
+					<img src="{% static 'img/course-img4.jpg'%}" alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							Web - dasturlash
+						</h3>
+						<p class="course-descrip">
+							HTML, CSS, JS va boshqa mashhur tillardan foydalangan holda veb-saytlarni noldan yaratishni o'rganing.
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+					<div class="author">
+						<img src="{% static 'img/William-Parker.jpg'%}" alt="" class="teacher">
+						<h4 class="teacher-FIO">William Parker</h4>
+					</div>
+					</div>
+				<div class="card">
+					<img src="{% static 'img/course-img5.jpg'%}" alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							MultiMedia elektron kitoblarini yaratish
+						</h3>
+						<p class="course-descrip">
+								Multimedia elektron kitoblari talabalar uchun har qanday mavzuni o’rganishda qulay vosita...
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+					<div class="author">
+						<img src="{% static 'img/Jack-Brown.jpg' %}" alt="" class="teacher">
+						<h4 class="teacher-FIO">Jack Brown</h4>
+					</div>
+					</div>
+				<div class="card">
+					<img src="{% static 'img/course-img6.jpg'%}" alt="" class="course-img">
+					<div class="short-info">
+						<h3 class="course-title">
+							web dizayn
+						</h3>
+						<p class="course-descrip">
+							Web saytlar, video-platformalar va web ilovalar qanday yaratilishini bilasizmi?  Mazkur kurs yordamida web - ilovalarni loyihalash sirlarini...
+						</p>
+					</div>
+					<div class="active">
+						<a href="#" class="enrol-btn">
+								Kursga yozilish
+						</a>
+					</div>
+					<br>
+					<hr class="line">
+
+					<div class="author">
+						<img src="{% static 'img/Beatrice-Park.jpg'%}" alt="" class="teacher">
+						<h4 class="teacher-FIO">Beatrice Park</h4>
+					</div>
+				</div>
+			</div>
+			<div class="active">
+			<a class="btn view-all">
+				<span>Barcha kurslar</span>
+			</a>
+			</div>
+		</div>
+	</section>
+	<section id="top-courses" class="top-courses">
+		<div class="container">
+			<h2 class="section-title center-title">		Yuqori baholangan kurslar
+			</h2>
+		<div class="course-cards">
+			<div class="bg-points-first">
+				<img src="{% static 'img/points.png'%}" alt="">
+			</div>
+			<a href="" class="course-card">
+            	<div class="course-card-info">
+            	<h2 class="course-card-title">
+            		Web dasturlash
+				</h2>
+				<div class="course-card-definition">
+					<div class="course-card-advantage">
+						HTML, CSS, va JavaScript yordamida veb-saytlar yaratishni o'rganing!
+					</div>
+				</div>
+				<div class="course-card-description">
+					<div class="course-card-point">
+						<div class="icons">
+						<img src="{% static 'img/course-card-students.png' %}" alt="">
+						<span>
+							107 ta talaba kursga yozilgan
+						</span>
+						</div>
+					</div>
+					<div class="course-card-point">
+						<div class="icons">
+						<img class="icon-clock" src="{% static 'img/course-card-hour.png'%} " alt="">
+						<span class="icon-span"> 15 soatlik video kontent</span>
+					</div>
+					</div>
+					<div class="course-card-point">
+						<div class="icons">
+						<img class="icon-task" src="{% static 'img/course-card-task.png'%} " alt="">
+						<span class="icon-span task">36 ta amaliy topshiriqlar</span>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="course-card-image">
+					<img src="{% static 'img/course-card-img1.png'%}" alt="">
+				</div>
+            </a>
+            <a href="" class="course-card">
+            	<div class="course-card-info">
+	            	<h2 class="course-card-title">
+	            		Kompyuter grafikasi
+					</h2>
+					<div class="course-card-definition">
+						<div class="course-card-advantage">
+							Photoshop va dizayn uchun eng yaxshi dasturlardan foydalanishni o'rganing.
+						</div>
+					</div>
+					<div class="course-card-description">
+						<div class="course-card-point">
+							<div class="icons">
+								<img src="{% static 'img/course-card-students.png'%} " alt="">
+								<span>
+									138 ta talaba kursga yozilgan
+								</span>
+							</div>
+						</div>
+						<div class="course-card-point">
+							<div class="icons">
+								<img class="icon-clock" src="{% static 'img/course-card-hour.png'%} " alt="">
+								<span class="icon-span">
+									20 soatlik video kontent
+								</span>
+							</div>
+						</div>
+						<div class="course-card-point">
+							<div class="icons">
+								<img class="icon-task" src="{% static 'img/course-card-task.png'%} " alt="">
+								<span class="icon-span task">
+									36 ta amaliy topshiriqlar
+								</span>
+							</div>
+						</div>
+					</div>
+					</div>
+					<div class="course-card-image ">
+					<img src="{% static 'img/course-card-img2.png'%} " alt="">
+				</div>
+            </a>
+            <div class="bg-points-second">
+				<img src="{% static 'img/points.png'%} " alt="">
+            </div>
+		</div>
+		</div>
+	</section>
+	<section id="features" class="features">
+		<div class="container">
+			<h2 class="section-title center-title">Nega aynan <span> «I Learn IT» </span>?</h2>
+			<div class="main-features">
+				<div class="main-feature">
+					<div class="main-feature-image">
+						<img src="{% static 'img/main-feature1.svg'%} " alt="">
+					</div>
+					<h3 class="main-feature-title">
+						Real kasbiy ko'nikmalar
+					</h3>
+					<p class="main-feature-description">
+						Simulyatsion muhit sharoitida mustaqil ta'lim olib real kasbiy ko'nikmlalarga ega bo'ling.
+					</p>
+				</div>
+				<div class="main-feature">
+					<div class="main-feature-image">
+						<img src="{% static 'img/main-feature2.png'%} " alt="">
+					</div>
+					<h3 class="main-feature-title">
+						Loyiha texnologiyasiga asoslangan faol ta'lim
+					</h3>
+					<p class="main-feature-description">
+						Haqiqiy loyihalar asosida mustaqil ta'lim oling.
+					</p>
+				</div>
+				<div class="main-feature">
+					<div class="main-feature-image noneleft">
+						<img src="{% static 'img/main-feature3.svg'%} " alt="">
+					</div>
+					<h3 class="main-feature-title">
+						Istalgan vaqtda va istalgan joyda ta'lim
+					</h3>
+					<p class="main-feature-description">
+						Istalgan vaqtda va istalgan joyda individual temp asosida mustaqil ta'lim oling.
+					</p>
+				</div>
+				<div class="main-feature">
+					<div class="main-feature-image noneleft">
+						<img src="{% static 'img/main-feature4.svg'%} " alt="">
+					</div>
+					<h3 class="main-feature-title">
+						Interaktiv ta'lim kontenti
+					</h3>
+					<p class="main-feature-description">
+						Interaktiv ta'limiy media resurslar yordamida ta'lim oling
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="become-teacher" class="become-teacher">
+		<div class="container">
+			<div class="join-in-block">
+			<img src="{% static 'img/join-in-block-img.jpg'%} " alt="" class="join-in-block-img">
+			<div class="CTA-text">
+			<h2 class="section-title center-title">
+				O'qituvchimisiz? U holda bizning jamoamizga qo'shiling.
+			</h2>
+			<p class="text">Bizning raqamli ta'lim platformamizga a'zo bo'ling hamda bilimlaringizni millionlab talabalar bilan baham ko'ring. Jahon ta'lim standartlariga moslashtirilgan kontentlarni topib, media ta'limiy resurslarni qamrab oluvchi kurslarni yarating va platformaga joylashtiring.
+				<!-- <br> <span>I Learn ITʼda roʻyxatdan oʻtish orqali siz
+					<span class="underline">Foydalanish shartlari
+					</span> va
+					<span class="underline">Maxfiylik siyosati
+					</span>ga roziligingizni bildirasiz.
+				</span>
+			 -->
+			 </p>
+			 <form action="" class="join-teachers-form">
+			 	<input  type="text" name="First-name" placeholder="Ism" class="input" required>
+			 	<input type="text" name="Last-name" placeholder="Familiya" class="input" required>
+			 	<input type="email" name="E-mail" placeholder="E-mail" class="input email" required>
+			 	<button type="submit" class="btn teacher join-in">Jamoaga qo'shilish</button>
+			 	<button type="submit" class="btn teacher upload">Kursni yuklash</button>
+			 </form>
+			</div>
+			</div>
+		</div>
+	</section>
+	<footer id="footer" class="footer">
+		<div class="container">
+			<div class="footer-block">
+				<p class="credits">
+					Copyright © 2023  All rights reserved| <br>
+	This template is made <!-- with <i class="fa fa-heart-o" aria-hidden="true"></i> --> by Zakhro Umarova
+				</p>
+				<div class="social">
+					<span>Follow us</span>
+					<a rel="nofollow" href="https://www.facebook.com" target="blank" title="facebook">
+						<i class="fa fa-facebook"></i>
+					</a>
+					<a rel="nofollow" href="telegram.org" title="telegram" target="blank">
+						<i class="fa fa-telegram"></i>
+					</a>
+					<a rel="nofollow" href="https://www.youtube.com" title="youtube" target="blank">
+						<i class="fa fa-youtube-play"></i>
+					</a>
+					<a rel="nofollow" href="https://www.instagram.com" title="instagram" target="blank">
+						<i class="fa fa-instagram"></i>
+					</a>
+				</div>
+				<div id="toTop" class="toTop">
+					<a href="#top">
+						<img src="{% static 'img/up-alt.svg'%} " alt="" class="up">
+				</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/main.js'%} "></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<title>Login</title>
+</head>
+<body>
+	<header class="header" id="header">
+		<div class="container">
+			<div class="nav">
+				<img src="{% static 'img/logo.svg' %}" alt="I learn IT" class="logo">
+				<ul class="menu">
+					<li>
+						<a href="{% url 'index' %}">
+							Bosh sahifa
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'index' %}">
+							Biz haqimizda
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'index' %}">
+							Kurslar
+						</a>
+					</li>
+				</ul>
+				<div class="user-data">
+					<a href="#">
+						<img src=" {% static 'img/lang.png'%} " alt="uz"id="lang" class="lang">
+					</a>
+					<!-- <a href="#" class="sign-in">
+						Kirish
+					</a>
+					 --><a href="{% url 'register' %}" class="sign-up-btn">	<span>
+							Ro'yxatdan o'tish
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</header>
+	<section class="form-container" id="form-container">
+		<div class="container">
+			<div class="frame">
+				<h2 class="section-title login-title">
+					Kirish
+				</h2>
+
+				<form method="post" action="" class="login-form" id="login-form">
+					  {% csrf_token %}
+					<div class="form-error"></div>
+					<div class="form-block">
+						<label class="label-text"> E-mail pochtangizni kiriting</label>
+						<input name="email" type="email" value="" class="input" required>
+					</div>
+					<div class="form-block">
+						<label class="label-container">
+						<label class="label-text"> Parolni kiriting</label>
+						<label class="forgot-password">
+                            <a href="/forgot">Parolingizni unutdingizmi?
+                            </a>
+                        </label>
+                        </label>
+						<input name="password" type="password" class="input" id="password"  required>
+						<span class="btn-show-pass"><i class="fa fa-eye" id="fa-eye" onclick="passwordShowOrHide()"></i></span>   
+					</div>
+					<div class="form-block rememberMe">
+						<input class="custom-checkbox" id="remember" type="checkbox" value="1" name="RememberMe">
+						<label for="remember">Meni eslab qol</label>
+					</div>
+					<div class="form-block">
+						<button type="submit" class="btn form">Kirish
+						</button>	
+					</div>
+					<a href="{% url 'register' %}" class="form-block registration-link">Ro'yxatdan o'tish</a>
+				</form>
+			</div>
+		</div>	
+	</section>
+	<footer id="footer" class="footer">
+		<div class="container">
+			<div class="footer-block">
+				<p class="credits">
+					 Zakhro Umarova © 2023. <br><!-- with <i class="fa fa-heart-o" aria-hidden="true"></i> -->  Barcha huquqlar himoyalangan.
+				</p>
+				<div class="social">
+					<span>Bizni kuzatib boring</span><br>
+					<a rel="nofollow" href="https://www.facebook.com" target="blank" title="facebook">
+						<i class="fa fa-facebook"></i>
+					</a>
+					<a rel="nofollow" href="telegram.org" title="telegram" target="blank">	
+						<i class="fa fa-telegram"></i>
+					</a>
+					<a rel="nofollow" href="https://www.youtube.com" title="youtube" target="blank">
+						<i class="fa fa-youtube-play"></i>
+					</a>
+					<a rel="nofollow" href="https://www.instagram.com" title="instagram" target="blank">
+						<i class="fa fa-instagram"></i>
+					</a>
+				</div>
+				<div id="toTop" class="toTop">
+					<a href="#top">
+						<img src="{% static 'img/up-alt.svg' %}" alt="" class="up">
+				</a>	
+				</div>
+			</div>
+		</div>
+	</footer>
+ <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+ <script src="{% static 'js/main.js' %}"></script>
+<script>
+function passwordShowOrHide(){
+	var x = document.getElementById("password");
+	if (x.type==="password"){
+		x.type="text";
+		document.getElementById("fa-eye").style.color="#8D00A8";
+	} else {
+		x.type="password";
+		document.getElementById("fa-eye").style.color="#120F39";
+	}
+}
+</script>
+</body>
+
+</html>

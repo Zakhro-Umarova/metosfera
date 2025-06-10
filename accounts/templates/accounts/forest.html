@@ -1,0 +1,572 @@
+ <head>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  {% load static %}
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    .modal-content {
+    max-height: 300px; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+    .home-section {
+      background-color: #6e8fec;
+      padding-top: 200px;
+}
+    .disabled {
+    pointer-events: none; /* Disable pointer events */
+    cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+}
+    .bg-green-500 {
+    background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
+}
+  </style>
+ </head>
+ <body class="bg-green-500 flex items-center justify-center h-screen">
+ <div class="text-center">
+   <div class="flex justify-center items-center mb-4 space-x-6">
+    <i class="fas fa-cog text-white text-2xl cursor-pointer control-button" id="gearButton">
+    </i>
+    <div class="flex space-x-4">
+     <button class="border border-white text-white rounded-full px-4 py-1 control-button" id="blocklistButton">
+      Bloklash rejimi (Blocklist mode)
+     </button>
+     <button class="border border-white text-white rounded-full px-4 py-1 control-button" id="allowlistButton">
+      Ruxsat rejimi (Allowlist mode)
+     </button>
+    </div>
+    <i class="fas fa-trophy text-white text-2xl control-button" id="achievementIcon" title="No Achievement Yet">
+    </i>
+   </div>
+   <div class="absolute top-30 left-90 bg-white shadow-lg rounded-lg hidden" id="contextMenu">
+    <ul class="text-left">
+     <li class="p-2 cursor-pointer hover:bg-gray-200" id="myPlants">
+      Meni o'simliklarim (My Plants)
+     </li>
+     <li class="p-2 cursor-pointer hover:bg-gray-200" id="myAllowlist">
+      Meni ruxsat ro'yxatim (My Allowlist)
+     </li>
+     <li class="p-2 cursor-pointer hover:bg-gray-200" id="myBlocklist">
+      Meni taqiq ro'yxatim (My Blocklist)
+     </li>
+    </ul>
+   </div>
+   <p class="text-white mb-4" id="message">
+    Ekish jarayonini boshlash uchun daraxtni bosing! (Click the tree to start planting!)
+   </p>
+   <div class="flex items-center justify-center mb-4">
+    <i class="fas fa-chevron-left text-white text-2xl cursor-pointer control-button" id="prevTree"></i>
+    <div id="forest" data-tree-image-path="{% static 'img/' %}">
+    <img alt="A tree planted in soil" class="mx-4 rounded-full cursor-pointer control-button" height="100" id="treeImage" src="{% static 'img/trees/0/0.png' %}" width="100"/>
+    </div>
+    <i class="fas fa-chevron-right text-white text-2xl cursor-pointer control-button" id="nextTree">
+    </i>
+   </div>
+   <div class="flex items-center justify-center mb-4">
+    <i class="fas fa-chevron-left text-white text-2xl cursor-pointer control-button" id="prevTime">
+    </i>
+    <p class="text-white text-4xl mx-4" id="time">
+     03:00
+    </p>
+    <i class="fas fa-chevron-right text-white text-2xl cursor-pointer control-button" id="nextTime">
+    </i>
+   </div>
+   <button class="border border-white text-white rounded-full px-4 py-1" id="giveUpButton">
+    Taslim bo'lish (Give up)
+   </button>
+  </div>
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="blocklistModal">
+   <div class="bg-white p-6 rounded-lg relative">
+    <button class="absolute top-2 right-2 text-gray-500" id="blocklistCloseButton">
+     <i class="fas fa-times">
+     </i>
+    </button>
+    <input class="mb-2 p-2 border rounded w-full" id="blocklistInput" placeholder="Enter URL to block" type="text"/>
+    <div class="flex justify-center space-x-2">
+     <button class="border border-gray-500 text-gray-500 rounded-full px-4 py-1" id="blocklistAddButton">
+      Qo'shish (Add)
+     </button>
+    </div>
+   </div>
+  </div>
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="allowlistModal">
+   <div class="bg-white p-6 rounded-lg relative">
+    <button class="absolute top-2 right-2 text-gray-500" id="allowlistCloseButton">
+     <i class="fas fa-times">
+     </i>
+    </button>
+    <input class="mb-2 p-2 border rounded w-full" id="allowlistInput" placeholder="Enter URL to allow" type="text"/>
+    <div class="flex justify-center space-x-2">
+     <button class="border border-gray-500 text-gray-500 rounded-full px-4 py-1" id="allowlistAddButton">
+      Qo'shish (Add)
+     </button>
+    </div>
+   </div>
+  </div>
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="plantsModal">
+   <div class="bg-white p-6 rounded-lg relative w-100">
+    <button class="absolute top-2 right-2 text-gray-500" id="plantsCloseButton">
+     <i class="fas fa-times"></i>
+    </button>
+    <h2 class="text-xl mb-4">Mening o'simliklarim (My Plants)</h2>
+    <div class="space-y-4 modal-content" id="plantsContainer">
+     <!-- User's plants will be displayed here -->
+    </div>
+   </div>
+  </div>
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="allowlistViewModal">
+   <div class="bg-white p-6 rounded-lg relative w-100">
+    <button class="absolute top-2 right-2 text-gray-500" id="allowlistViewCloseButton">
+     <i class="fas fa-times">
+     </i>
+    </button>
+    <h2 class="text-xl mb-4">Meni ruxsat ro'yxatim (My Allowlist)</h2>
+    <ul class="list-disc pl-5" id="allowlistContainer">
+      <!-- User's allowlist will be displayed here -->
+    </ul>
+   </div>
+  </div>
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden" id="blocklistViewModal">
+   <div class="bg-white p-6 rounded-lg relative w-100">
+    <button class="absolute top-2 right-2 text-gray-500" id="blocklistViewCloseButton">
+     <i class="fas fa-times">
+     </i>
+    </button>
+    <h2 class="text-xl mb-4">Meni taqiq ro'yxatim (My Blocklist)</h2>
+    <ul class="list-disc pl-5" id="blocklistContainer">
+     <!-- User's blocklist will be displayed here -->
+    </ul>
+   </div>
+  </div>
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+            // const treeStages = [
+            //   [  'trees/0/0.png', 'trees/0/1.png', 'trees/0/2.png', 'trees/0/3.png', 'trees/0/4.png', 'trees/0/5.png', 'trees/0/6.png', 'trees/0/7.png' ],
+            //   [  'trees/1/0.png', 'trees/1/1.png', 'trees/1/2.png', 'trees/1/3.png', 'trees/1/4.png', 'trees/1/5.png', 'trees/1/6.png', 'trees/1/7.png'],
+            //   [  'trees/2/0.png', 'trees/2/1.png', 'trees/2/2.png', 'trees/2/3.png', 'trees/2/4.png', 'trees/2/5.png', 'trees/2/6.png', 'trees/2/7.png'],
+            //   [  'trees/3/0.png', 'trees/3/1.png', 'trees/3/2.png', 'trees/3/3.png', 'trees/3/4.png', 'trees/3/5.png', 'trees/3/6.png', 'trees/3/7.png'],
+            //   [  'trees/4/0.png', 'trees/4/1.png', 'trees/4/2.png', 'trees/4/3.png', 'trees/4/4.png', 'trees/4/5.png', 'trees/4/6.png', 'trees/4/7.png' ],
+            //   [  'trees/5/0.png', 'trees/5/1.png', 'trees/5/2.png', 'trees/5/3.png', 'trees/5/4.png', 'trees/5/5.png', 'trees/5/6.png', 'trees/5/7.png'],
+            //   [  'trees/6/0.png', 'trees/6/1.png', 'trees/6/2.png', 'trees/6/3.png', 'trees/6/4.png', 'trees/6/5.png', 'trees/6/6.png', 'trees/6/7.png']
+            //
+            // ];
+            const deadTreeImage = [
+             "{% static 'img/trees/0/dead.png' %}",
+             "{% static 'img/trees/1/dead.png' %}",
+             "{% static 'img/trees/2/dead.png' %}",
+             "{% static 'img/trees/3/dead.png'%}",
+             "{% static 'img/trees/4/dead.png'%}",
+             "{% static 'img/trees/5/dead.png'%}",
+             "{% static 'img/trees/6/dead.png'%}"
+            ];
+            // Create an array to store image paths for each tree
+            const treeImages = [
+                [
+            "{% static 'img/trees/0/0.png'%}",
+            "{% static 'img/trees/0/1.png'%}",
+            "{% static 'img/trees/0/2.png'%}",
+            "{% static 'img/trees/0/3.png'%}",
+            "{% static 'img/trees/0/4.png'%}",
+            "{% static 'img/trees/0/5.png'%}",
+            "{% static 'img/trees/0/6.png'%}",
+            "{% static 'img/trees/0/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/1/0.png'%}",
+            "{% static 'img/trees/1/1.png'%}",
+            "{% static 'img/trees/1/2.png'%}",
+            "{% static 'img/trees/1/3.png'%}",
+            "{% static 'img/trees/1/4.png'%}",
+            "{% static 'img/trees/1/5.png'%}",
+            "{% static 'img/trees/1/6.png'%}",
+            "{% static 'img/trees/1/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/2/0.png'%}",
+            "{% static 'img/trees/2/1.png'%}",
+            "{% static 'img/trees/2/2.png'%}",
+            "{% static 'img/trees/2/3.png'%}",
+            "{% static 'img/trees/2/4.png'%}",
+            "{% static 'img/trees/2/5.png'%}",
+            "{% static 'img/trees/2/6.png'%}",
+            "{% static 'img/trees/2/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/3/0.png'%}",
+            "{% static 'img/trees/3/1.png'%}",
+            "{% static 'img/trees/3/2.png'%}",
+            "{% static 'img/trees/3/3.png'%}",
+            "{% static 'img/trees/3/4.png'%}",
+            "{% static 'img/trees/3/5.png'%}",
+            "{% static 'img/trees/3/6.png'%}",
+            "{% static 'img/trees/3/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/4/0.png'%}",
+            "{% static 'img/trees/4/1.png'%}",
+            "{% static 'img/trees/4/2.png'%}",
+            "{% static 'img/trees/4/3.png'%}",
+            "{% static 'img/trees/4/4.png'%}",
+            "{% static 'img/trees/4/5.png'%}",
+            "{% static 'img/trees/4/6.png'%}",
+            "{% static 'img/trees/4/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/5/0.png'%}",
+            "{% static 'img/trees/5/1.png'%}",
+            "{% static 'img/trees/5/2.png'%}",
+            "{% static 'img/trees/5/3.png'%}",
+            "{% static 'img/trees/5/4.png'%}",
+            "{% static 'img/trees/5/5.png'%}",
+            "{% static 'img/trees/5/6.png'%}",
+            "{% static 'img/trees/5/7.png'%}"
+                ],
+                [
+            "{% static 'img/trees/6/0.png'%}",
+            "{% static 'img/trees/6/1.png'%}",
+            "{% static 'img/trees/6/2.png'%}",
+            "{% static 'img/trees/6/3.png'%}",
+            "{% static 'img/trees/6/4.png'%}",
+            "{% static 'img/trees/6/5.png'%}",
+            "{% static 'img/trees/6/6.png'%}",
+            "{% static 'img/trees/6/7.png'%}"
+                ]
+            ];
+            let currentTreeIndex = 0;
+            const treeImageElement = document.getElementById('treeImage');
+
+            const times = ['03:00', '05:00', '10:00', '15:00', '30:00', '60:00', '120:00'];
+            let currentTimeIndex = 2;
+            const timeElement = document.getElementById('time');
+
+            const messages = ["Keep up going", "You can do it", "Keep working", "Stay focused", "It's almost done"];
+            const messageElement = document.getElementById('message');
+
+            const buttons = document.querySelectorAll('.control-button');
+            const giveUpButton = document.getElementById('giveUpButton');
+
+            const allowlist = [];
+            const blocklist = [];
+            const plants = [];
+
+            let totalFocusedTime = 0; // in minutes
+
+            function toggleButtons(disabled, disableControlButtons = false ) {
+                buttons.forEach(button => {
+                    button.disabled = disabled;
+                    if (disabled) {
+                        button.classList.add('opacity-90', 'cursor-not-allowed', );
+                    } else {
+                        button.classList.remove('opacity-90', 'cursor-not-allowed');
+                    }
+                });
+                giveUpButton.disabled = !disabled;
+                if (!disabled) {
+                    giveUpButton.classList.add('opacity-90', 'cursor-not-allowed');
+                } else {
+                    giveUpButton.classList.remove('opacity-90', 'cursor-not-allowed');
+                }
+            // Disable/enable control buttons (tree navigation and timer control)
+              const controlButtons = [document.getElementById('prevTree'), document.getElementById('nextTree'), document.getElementById('prevTime'), document.getElementById('nextTime')];
+              controlButtons.forEach(button => {
+              button.disabled = disableControlButtons;
+              if (disableControlButtons) {
+                button.classList.add('opacity-90', 'cursor-not-allowed');
+              } else {
+                button.classList.remove('opacity-90', 'cursor-not-allowed');
+              }
+            });
+            }
+
+            function updateAchievementIcon() {
+                const achievementIcon = document.getElementById('achievementIcon');
+                if (totalFocusedTime >= 7 * 24 * 60) {
+                    achievementIcon.className = 'fas fa-crown text-white text-2xl';
+                    achievementIcon.title = 'Adept Planter';
+                } else if (totalFocusedTime >= 3 * 24 * 60) {
+                    achievementIcon.className = 'fas fa-medal text-white text-2xl';
+                    achievementIcon.title = 'Apprentice Planter';
+                } else if (totalFocusedTime >= 4 * 60) {
+                    achievementIcon.className = 'fas fa-seedling text-white text-2xl';
+                    achievementIcon.title = 'Novice Planter';
+                } else {
+                    achievementIcon.className = 'fas fa-trophy text-white text-2xl';
+                    achievementIcon.title = 'No Achievement Yet';
+                }
+            }
+             function initializeTreeImage() {
+                for (let i = 0; i < treeImages.length; i++) {
+                    treeImageElement.src = treeImages[i][0]; // Display the initial image for each tree
+                }
+            }
+
+
+            document.getElementById('prevTree').addEventListener('click', function () {
+                currentTreeIndex = (currentTreeIndex - 1 + treeImages.length) % treeImages.length;
+                treeImageElement.src = treeImages[currentTreeIndex][0]; // Reset to the first stage of the selected tree
+            });
+
+            document.getElementById('nextTree').addEventListener('click', function () {
+                currentTreeIndex = (currentTreeIndex + 1) % treeImages.length;
+                treeImageElement.src = treeImages[currentTreeIndex][0]; // Reset to the first stage of the selected tree
+            });
+
+            document.getElementById('prevTime').addEventListener('click', function () {
+                currentTimeIndex = (currentTimeIndex - 1 + times.length) % times.length;
+                timeElement.textContent = times[currentTimeIndex];
+            });
+
+            document.getElementById('nextTime').addEventListener('click', function () {
+                currentTimeIndex = (currentTimeIndex + 1) % times.length;
+                timeElement.textContent = times[currentTimeIndex];
+            });
+
+            document.getElementById('blocklistButton').addEventListener('click', function () {
+                const modal = document.getElementById('blocklistModal');
+                modal.classList.remove('hidden');
+            });
+
+            document.getElementById('allowlistButton').addEventListener('click', function () {
+                const modal = document.getElementById('allowlistModal');
+                modal.classList.remove('hidden');
+            });
+
+            document.getElementById('blocklistAddButton').addEventListener('click', function () {
+                const inputField = document.getElementById('blocklistInput');
+                if (inputField.value) {
+                    blocklist.push(inputField.value);
+                    updateBlocklistView();
+                    alert(`Added to blocklist: ${inputField.value}`);
+                    inputField.value = '';
+                    document.getElementById('blocklistModal').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('allowlistAddButton').addEventListener('click', function () {
+                const inputField = document.getElementById('allowlistInput');
+                if (inputField.value) {
+                    allowlist.push(inputField.value);
+                    updateAllowlistView();
+                    alert(`Added to allowlist: ${inputField.value}`);
+                    inputField.value = '';
+                    document.getElementById('allowlistModal').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('blocklistCloseButton').addEventListener('click', function () {
+                document.getElementById('blocklistModal').classList.add('hidden');
+            });
+
+            document.getElementById('allowlistCloseButton').addEventListener('click', function () {
+                document.getElementById('allowlistModal').classList.add('hidden');
+            });
+
+            document.getElementById('gearButton').addEventListener('click', function () {
+                const contextMenu = document.getElementById('contextMenu');
+                contextMenu.classList.toggle('hidden');
+            });
+
+            document.getElementById('myPlants').addEventListener('click', function () {
+                const modal = document.getElementById('plantsModal');
+                modal.classList.remove('hidden');
+                document.getElementById('contextMenu').classList.add('hidden');
+                updatePlantsView();
+            });
+
+            document.getElementById('myAllowlist').addEventListener('click', function () {
+                const modal = document.getElementById('allowlistViewModal');
+                modal.classList.remove('hidden');
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+
+            document.getElementById('myBlocklist').addEventListener('click', function () {
+                const modal = document.getElementById('blocklistViewModal');
+                modal.classList.remove('hidden');
+                document.getElementById('contextMenu').classList.add('hidden');
+            });
+
+            document.getElementById('plantsCloseButton').addEventListener('click', function () {
+                document.getElementById('plantsModal').classList.add('hidden');
+            });
+
+            document.getElementById('allowlistViewCloseButton').addEventListener('click', function () {
+                document.getElementById('allowlistViewModal').classList.add('hidden');
+            });
+
+            document.getElementById('blocklistViewCloseButton').addEventListener('click', function () {
+                document.getElementById('blocklistViewModal').classList.add('hidden');
+            });
+
+            function updateAllowlistView() {
+                const allowlistContainer = document.getElementById('allowlistContainer');
+                allowlistContainer.innerHTML = '';
+                allowlist.forEach(url => {
+                    const li = document.createElement('li');
+                    li.textContent = url;
+                    allowlistContainer.appendChild(li);
+                });
+            }
+
+            function updateBlocklistView() {
+                const blocklistContainer = document.getElementById('blocklistContainer');
+                blocklistContainer.innerHTML = '';
+                blocklist.forEach(url => {
+                    const li = document.createElement('li');
+                    li.textContent = url;
+                    blocklistContainer.appendChild(li);
+                });
+            }
+
+            function updatePlantsView() {
+                const plantsContainer = document.getElementById('plantsContainer');
+                plantsContainer.innerHTML = '';
+                plants.forEach(plant => {
+                    const plantElement = document.createElement('div');
+                    plantElement.className = 'flex items-center space-x-4';
+                    plantElement.innerHTML = `
+                        <img alt="${plant.status} tree" class="w-16 h-16 rounded-full" src="${plant.image}" />
+                        <div>
+                            <p>Date of Planting: ${plant.date}</p>
+                            <p>Time Taken: ${plant.time} minutes</p>
+                        </div>
+                    `;
+                    plantsContainer.appendChild(plantElement);
+                });
+            }
+
+            let timerInterval;
+            let messageInterval;
+            let treeStageInterval;
+
+            let hasGivenUp = false; // New state variable to track if the user has given up
+            let elapsedTime = 0; // Variable to track elapsed time in seconds
+            let initialTimerValue = 0;
+
+            function stopTimer(isGiveUp = false) {
+                clearInterval(timerInterval);
+                clearInterval(messageInterval);
+                clearInterval(treeStageInterval);
+                if (isGiveUp) {
+                    alert("You gave up!");
+                    treeImageElement.src = deadTreeImage[currentTreeIndex];
+                    hasGivenUp = true; // Set the state to true when the user gives up
+
+                    // Calculate the time taken based on the initial timer value minus the remaining time
+                    plants.push({
+                        status: 'Dead',
+                        image: deadTreeImage[currentTreeIndex],
+                        date: new Date().toISOString().split('T')[0],
+                        time: Math.max(0, elapsedTime / 60) // Store time in minutes, ensuring it's not negative
+                    });
+                    // Set the message and toggle buttons
+                    messageElement.textContent = "Click the tree to start planting!";
+                    toggleButtons(false);
+                } else {
+                    alert("Congratulations, you have grown up a healthy tree!");
+                    treeImageElement.src = treeImages[currentTreeIndex][7]; // Show the fully grown tree image
+                    plants.push({
+                        status: 'Healthy',
+                        image: treeImages[currentTreeIndex][7],
+                        date: new Date().toISOString().split('T')[0],
+                        time: Math.max(0, initialTimerValue / 60) // Store the initial timer value in minutes
+                    });
+                    updateAchievementIcon();
+                }
+                messageElement.textContent = "Click the tree to start planting!";
+                toggleButtons(false);
+
+               // Remove the disabled class from buttons and images
+               document.querySelectorAll('.control-button').forEach(button => {
+                   button.classList.remove('disabled');
+               });
+               treeImageElement.classList.remove('disabled'); // Enable the image
+
+                // Reset the relevant states
+                initialTimerValue = 0;
+                elapsedTime = 0;
+                timerInterval = null;
+                messageInterval = null;
+                treeStageInterval = null;
+                currentTreeIndex = 0;
+                hasGivenUp = false;
+            }
+
+            giveUpButton.addEventListener('click', function () {
+                stopTimer(true);
+            });
+            // In the treeImageElement click event listener
+            treeImageElement.addEventListener('click', function () {
+                if (hasGivenUp) { // Check if the user has given up
+                    // Reset the state to allow planting again
+                    hasGivenUp = false; // Reset the state
+                    currentTreeIndex = 0; // Reset to the first tree image
+                    treeImageElement.src = treeImages[currentTreeIndex][0]; // Reset the tree image
+                    timeElement.textContent = times[currentTimeIndex]; // Reset the time display
+                    messageElement.textContent = "Click the tree to start planting!"; // Reset the message
+                    toggleButtons(false); // Enable buttons
+                    elapsedTime = 0; // Reset elapsed time
+                    return; // Exit the function to prevent starting the timer
+                }
+                // If the timer is already running, stop it
+                if (timerInterval) {
+                    stopTimer();
+                }
+                // Start the planting process
+                let [minutes, seconds] = timeElement.textContent.split(':').map(Number);
+                initialTimerValue = minutes * 60 + seconds; // Store the initial timer value in seconds
+
+                messageElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+                toggleButtons(true);
+                elapsedTime = 0; // Reset elapsed time for the new planting session
+
+                timerInterval = setInterval(function () {
+                    if (seconds === 0) {
+                        if (minutes === 0) {
+                            stopTimer(false); // Call stopTimer with false to indicate successful completion
+                            return;
+                        }
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        seconds--;
+                    }
+                    elapsedTime++; // Increment elapsed time
+                    timeElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }, 1000);
+                messageInterval = setInterval(function () {
+                    messageElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+                }, 5000);
+
+                treeStageInterval = setInterval(function () {
+                    let stageIndex = Math.floor((elapsedTime / initialTimerValue) * treeImages[currentTreeIndex].length);
+                    // Clamp the stageIndex to ensure it does not exceed the bounds of the array
+                    stageIndex = Math.min(stageIndex, treeImages[currentTreeIndex].length - 1);
+                    treeImageElement.src = treeImages[currentTreeIndex][stageIndex]; // Update the tree image based on the current growth stage
+                }, 1000);
+            });
+
+            initializeTreeImage(); // Call to display initial images for all trees
+            updateAchievementIcon();
+        });
+  function startTimer(duration) {
+    initialTimerValue = duration;
+    elapsedTime = 0;
+    // Add the disabled class to buttons and images
+    document.querySelectorAll('.control-button').forEach(button => {
+        button.classList.add('disabled');
+    });
+     treeImageElement.classList.add('disabled'); // Disable the image
+
+
+    timerInterval = setInterval(() => {
+        elapsedTime += 1;
+        if (elapsedTime >= initialTimerValue) {
+            stopTimer(false);
+        }
+    }, 1000);
+    // Initialize other intervals here as needed
+}
+
+  </script>
+  <script src="{% static 'js/forest.js' %}"></script>
+ </body>
+</html>

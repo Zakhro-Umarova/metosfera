@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {% load static %}
+  <title>Responsive Sidebar</title>
+
+  <!-- Link Styles -->
+  <link rel="stylesheet" href="{% static 'css/Sidebar_style.css' %}">
+
+  <!-- style and script for notepad.html -->
+  <link rel="stylesheet" href="{% static 'css/notepad.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <!-- style and script for notepad.html -->
+
+  <!-- style and script for forest.html -->
+  <link rel="stylesheet" href="{% static 'css/forest.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <!-- style and script for forest.html -->
+
+  <!-- style and script for IKIGAI.html -->
+  <link rel="stylesheet" href="{% static 'css/ikigai.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <!-- style and script for IKIGAI.html -->
+
+  <!-- style and script for Courses.html -->
+  <link rel="stylesheet" href="{% static 'css/courses.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <!-- style and script for Courses.html -->
+
+  <!-- style and script for  Infobite 3minutes of knowledge -->
+  <link rel="stylesheet" href="{% static 'css/infobite.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+   <!-- style and script for 3minutes of knowledge -->
+
+   <!-- style and script for chatgpt.html -->
+  <link rel="stylesheet" href="{% static 'css/chatgpt.css' %}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <!-- style and script for chatgpt.html -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+:root{
+  --color-default:#004f83;
+  --color-second:#0067ac;
+  --color-white:#fff;
+  --color-body:#e4e9f7;
+  --color-light:#e0e0e0;
+}
+
+
+*{
+  padding: 0%;
+  margin: 0%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body{
+  min-height: 100vh;
+}
+
+.sidebar{
+  min-height: 100vh;
+  width: 78px;
+  padding: 6px 14px;
+  z-index: 99;
+  background-color: var(--color-default);
+  transition: all .5s ease;
+  position: fixed;
+  top:0;
+  left: 0;
+}
+
+.sidebar.open{
+  width: 250px;
+}
+
+.sidebar .logo_details{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.sidebar .logo_details .icon{
+  opacity: 0;
+  transition: all 0.5s ease ;
+}
+
+.sidebar .logo_details .logo_name{
+  color:var(--color-white);
+  font-size: 22px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all .5s ease;
+}
+
+.sidebar.open .logo_details .icon,
+.sidebar.open .logo_details .logo_name{
+  opacity: 1;
+}
+
+.sidebar .logo_details #btn{
+  position: absolute;
+  top:50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 23px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .5s ease;
+
+
+}
+
+.sidebar.open .logo_details #btn{
+  text-align: right;
+}
+
+.sidebar i{
+  color:var(--color-white);
+  height: 60px;
+  line-height: 60px;
+  min-width: 50px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.sidebar .nav-list{
+  margin-top: 20px;
+  height: 100%;
+}
+
+.sidebar li{
+  position: relative;
+  margin:8px 0;
+  list-style: none;
+}
+
+.sidebar li .tooltip{
+  position: absolute;
+  top:-20px;
+  left:calc(100% + 15px);
+  z-index: 3;
+  background-color: var(--color-white);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 6px 14px;
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar li:hover .tooltip{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+.sidebar.open li .tooltip{
+  display: none;
+}
+
+.sidebar input{
+  font-size: 15px;
+  color: var(--color-white);
+  font-weight: 400;
+  outline: none;
+  height: 35px;
+  width: 35px;
+  border:none;
+  border-radius: 5px;
+  background-color: var(--color-second);
+  transition: all .5s ease;
+}
+
+.sidebar input::placeholder{
+  color:var(--color-light)
+}
+
+.sidebar.open input{
+  width: 100%;
+  padding: 0 20px 0 50px;
+}
+
+.sidebar .bx-search{
+  position: absolute;
+  top:50%;
+  left:0;
+  transform: translateY(-50%);
+  font-size: 22px;
+  background-color: var(--color-second);
+  color: var(--color-white);
+}
+
+.sidebar li a{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  text-decoration: none;
+  background-color: var(--color-default);
+  position: relative;
+  transition: all .5s ease;
+  z-index: 12;
+}
+
+.sidebar li a::after{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  background-color: var(--color-white);
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: left;
+  z-index: -2;
+}
+
+.sidebar li a:hover::after{
+  transform: scaleX(1);
+  color:var(--color-default)
+}
+
+.sidebar li a .link_name{
+  color:var(--color-white);
+  font-size: 15px;
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.sidebar li a:hover .link_name,
+.sidebar li a:hover i{
+  transition: all 0.5s ease;
+  color:var(--color-default)
+}
+
+.sidebar.open li a .link_name{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar li i{
+  height: 35px;
+  line-height: 35px;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.sidebar li.profile{
+  position: fixed;
+  height: 60px;
+  width: 78px;
+  left: 0;
+  bottom:-8px;
+  padding:10px 14px;
+  overflow: hidden;
+  transition: all .5s ease;
+}
+
+.sidebar.open li.profile{
+  width: 250px;
+}
+
+.sidebar .profile .profile_details{
+  display: flex;
+  align-items: center;
+  flex-wrap:  nowrap;
+}
+
+.sidebar li img{
+  height: 45px;
+  width: 45px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.sidebar li.profile .name,
+.sidebar li.profile .designation{
+  font-size: 15px;
+  font-weight: 400;
+  color:var(--color-white);
+  white-space: nowrap;
+}
+
+.sidebar li.profile .designation{
+  font-size: 12px;
+}
+
+.sidebar .profile #log_out{
+  position: absolute;
+  top:50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: var(--color-second);
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.sidebar.open .profile #log_out{
+  width: 50px;
+  background: none;
+}
+.sidebar .profile #log-out-button {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: var(--color-second);
+  width: 100%;
+  height: 60px;
+  line-height: 60px; /* Center text vertically */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  border: none; /* Remove default button border */
+  color: white; /* Change text color if needed */
+  font-size: 16px; /* Adjust font size as needed */
+}
+.sidebar.open .profile #log-out-button {
+  width: 50px;
+  background: none;
+  color: white; /* Inherit color from parent if needed */
+  font-size: 16px;
+}
+
+
+.home-section{
+  position: relative;
+  background-color: var(--color-body);
+  min-height: 100vh;
+  top:0;
+  left:78px;
+  width: calc(100% - 78px);
+  transition: all .5s ease;
+  z-index: 2;
+}
+
+.home-section .text{
+  display: inline-block;
+  color:var(--color-default);
+  font-size: 25px;
+  font-weight: 500;
+  margin: 18px;
+}
+
+.sidebar.open ~ .home-section{
+  left:250px;
+  width: calc(100% - 250px);
+}
+
+.image-container {
+    position: relative;
+    text-align: center; /* Center the text */
+}
+
+.aesthetic-image {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%; /* Make the image responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+  </style>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo_details">
+      <i class="bx bxl-audible icon"></i>
+      <div class="logo_name">I Learn IT</div>
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <ul class="nav-list">
+      <li>
+        <i class="bx bx-search"></i>
+        <input type="text" placeholder="Search...">
+         <span class="tooltip">Search</span>
+      </li>
+      <li>
+        <a href="#" id="courses-link" data-url="{% url 'courses' %}">
+          <i class="bx bx-grid-alt"></i>
+          <span class="link_name">Onlayn kurslar</span>
+        </a>
+        <span class="tooltip">Onlayn kurslar</span>
+      </li>
+      <li>
+        <a href="#" id="infobite-link" data-url="{% url 'infobite' %}">
+          <i class="bx bx-movie-play"></i>
+          <span class="link_name">InfoBite</span>
+        </a>
+        <span class="tooltip">InfoBite</span>
+      </li>
+      <li>
+        <a href="#" id="ikigai-link" data-url="{% url 'ikigai' %}">
+          <i class="bx bx-cross"></i>
+          <span class="link_name">IKIGAI</span>
+        </a>
+        <span class="tooltip">IKIGAI</span>
+      </li>
+      <li>
+        <a href="#" id="pomodoro-link" data-url="{% url 'pomodoro' %}">
+          <i class="bx bx-pie-chart-alt-2"></i>
+          <span class="link_name">Pomodoro texnikasi</span>
+        </a>
+        <span class="tooltip">Pomodoro texnikasi</span>
+      </li>
+      <li>
+        <a href="#" id="notepad-link" data-url="{% url 'notepad' %}">
+          <i class="bx bx-notepad"></i>
+          <span class="link_name">Tizimli qaydnoma</span>
+        </a>
+        <span class="tooltip">Tizimli qaydnoma</span>
+      </li>
+      <li>
+        <a href="#" id="forest-link" data-url="{% url 'forest' %}">
+         <i class="bx bxs-tree"></i>
+          <span class="link_name">Konsentratsiya o'rmoni</span>
+        </a>
+        <span class="tooltip">Konsentratsiya o'rmoni</span>
+      </li>
+  <li>
+        <a href="#" id="chatgpt-link" data-url="{% url 'chatgpt' %}">
+          <i class='bx bx-aperture'></i>
+          <span class="link_name">Chatgpt</span>
+        </a>
+        <span class="tooltip">Chatgpt</span>
+      </li>
+      <li>
+        <a href="#" id="profile-settings-link" data-url="{% url 'profile_settings' %}">
+          <i class="bx bx-cog"></i>
+          <span class="link_name">Sozlamalar</span>
+        </a>
+        <span class="tooltip">Sozlamalar</span>
+      </li>
+      <li class="profile">
+        <div class="profile_details">
+            {% if user.avatar %}
+            <img class="profile_img" src="{{ user.avatar.url }}" alt="profile image">
+        {% else %}
+          {% load static %}
+          <img class="profile_img" src="{% static 'img/avatars/profile.png' %}" alt="default profile image">
+        {% endif %}
+          <div class="profile_content">
+            <div class="name">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="designation">User</div>
+          </div>
+        </div>
+        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="bx bx-log-out" id="log-out-button" title="LogOut"></button>
+        </form>
+      </li>
+    </ul>
+  </div>
+  <section class="home-section">
+    <div class="image-container">
+        <img src="{% static 'img/motivation.jpg' %}" alt="Dashboard Image" class="aesthetic-image">
+   </div>
+  </section>
+  <!-- Scripts
+  <script src="script.js"></script>  -->
+  <script src="{% static 'js/pomodoro.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/notepad.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/forest.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/ikigai.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/courses.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/infobite.js' %}" defer></script> <!-- Include the new JS file -->
+  <script src="{% static 'js/chatgpt.js' %}" defer></script> <!-- Include the new JS file -->
+
+<script>
+
+  function setupSidebarToggle() {
+    const sidebar = document.querySelector(".sidebar");
+    const closeBtn = document.querySelector("#btn");
+    const searchBtn = document.querySelector(".bx-search")
+
+    searchBtn.addEventListener("click",function(){
+        sidebar.classList.toggle("open")
+        menuBtnChange()
+    })
+    closeBtn.addEventListener("click",function(){
+      sidebar.classList.toggle("open")
+      menuBtnChange()
+    });
+    function menuBtnChange(){
+        if(sidebar.classList.contains("open")){
+            closeBtn.classList.replace("bx-menu","bx-menu-alt-right")
+        }else{
+            closeBtn.classList.replace("bx-menu-alt-right","bx-menu")
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  setupSidebarToggle();
+  const pomodoroLink = document.getElementById("pomodoro-link");
+  const notepadLink = document.getElementById("notepad-link");
+  const forestLink = document.getElementById("forest-link");
+  const ikigaiLink = document.getElementById("ikigai-link");
+  const coursesLink = document.getElementById("courses-link");
+  const infobiteLink = document.getElementById("infobite-link");
+  const chatgptLink = document.getElementById("chatgpt-link");
+  // const aiLink = document.getElementById("ai-link"); // New line for AI link
+  const profileSettingsLink = document.getElementById("profile-settings-link");
+
+
+  const homeSection = document.querySelector(".home-section");
+
+  // Function to load content
+    pomodoroLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+    coursesLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+    infobiteLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+    notepadLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+    forestLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+    ikigaiLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+     chatgptLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+      profileSettingsLink.addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent the default link behavior
+      const url = this.getAttribute("data-url"); // Get the URL from the data attribute
+      loadContent(url); // Load the content
+  });
+
+
+    // // New event listener for AI link
+    // aiLink.addEventListener("click", function (event) {
+    //     event.preventDefault(); // Prevent the default link behavior
+    //     loadAIContent(); // Load the AI content
+    // });
+
+    // function loadAIContent() {
+    //     homeSection.innerHTML = `<iframe src="https://www.chatgpt.com" style="width: 100%; height: 100%; border: none;"></iframe>`;
+    // }
+    function loadContent(url) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                 // Create a temporary DOM element to parse the HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // // Extract and append the CSS to the head
+            // const styles = tempDiv.querySelectorAll('link[rel="stylesheet"]');
+            // styles.forEach(style => {
+            //     document.head.appendChild(style);
+            // });
+
+              // Extract and append the CSS to the head
+            const styles = tempDiv.querySelectorAll('link[rel="stylesheet"]');
+            styles.forEach(style => {
+                const newStyle = document.createElement('link');
+                newStyle.rel = 'stylesheet';
+                newStyle.href = style.href; // Use the href from the fetched HTML
+                document.head.appendChild(newStyle);
+            });
+
+            // Extract and append the JS to the body
+            const scripts = tempDiv.querySelectorAll('script');
+            scripts.forEach(script => {
+                const newScript = document.createElement('script');
+                newScript.src = script.src; // Use the src from the fetched HTML
+                newScript.defer = true; // Ensure it loads after the document is parsed
+                document.body.appendChild(newScript);
+            });
+
+            // Replace the content of home-section
+            homeSection.innerHTML = tempDiv.innerHTML; // Replace the content of home-section
+
+              // Call any initialization function if needed
+            if (url.includes('pomodoro')) {
+                initializePomodoro(); // Assuming you have this function for pomodoro
+            }
+            if (url.includes('courses')) {
+                courseFunctions.matchingGame.init();
+                // // Assuming you have this function for Courses
+            }
+            if (url.includes('notepad')) {
+                initializeNotepad(); // Assuming you have this function for notepad
+            }
+            if (url.includes('forest')) {
+                  initializeForest(); // Call your initialization function here
+            }
+            if (url.includes('infobite')) {
+                Initializeinfobite(); // Assuming you have this function for forest
+            }
+            if (url.includes('ikigai')) {
+                initializeIKIGAI(); // Assuming you have this function for forest
+            }
+            if (url.includes('chatgpt')) {
+                initializeChat(); // Assuming you have this function for forest
+
+            }
+        })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+
+});
+</script>
+</body>
+</html>
