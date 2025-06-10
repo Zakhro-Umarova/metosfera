@@ -1,0 +1,10 @@
+    body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .venn-circle {
+            fill-opacity: 0.5;
+        }
+        svg {
+    max-width: 100%;
+    height: auto;
+}

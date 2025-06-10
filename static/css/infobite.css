@@ -1,0 +1,12 @@
+/* styles.css */
+body, html {
+    height: 100%; /* Full height */
+    margin: 0; /* Remove default margin */
+}
+
+.flex-container {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    /*height: 100vh; !* Full height of the viewport *!*/
+}

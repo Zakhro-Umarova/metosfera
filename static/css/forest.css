@@ -1,0 +1,15 @@
+.modal-content {
+    max-height: 300px; /* Set a maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+    .disabled {
+        pointer-events: none; /* Disable pointer events */
+        cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+    }
+.home-section {
+      background-color: #6e8fec;
+}
+.justify-between {
+    /*justify-content: space-between;*/
+
+}

@@ -1,0 +1,1069 @@
+body{
+	padding: 0;
+	margin: 0;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 14px;
+	color: #120F39;
+	box-sizing: border-box;
+	/*overflow-x: hidden;*/
+
+}
+p, ul,li,a{
+	padding: 0;
+	margin: 0;
+	font-family: 'Montserrat', sans-serif;
+	
+}
+h1, h2, h3, h4, h5, h6{
+	font-family: 'Montserrat', sans-serif;
+	padding: 0;
+	margin: 0;
+	text-transform: uppercase;
+}
+.container{
+	width: 1170px;
+	margin: 0 auto; /*позиционирование по центру*/
+		/*background: rgba(0, 0, 0, 0.58);*/
+} 
+.logo{
+	padding-top: 11px;
+	margin-right: 120px;
+}
+.nav{
+	display: flex;
+	align-items: center; 
+}
+ul,li{
+	display: block;
+}
+.header a{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+.menu{
+	display: flex;
+	align-items: center;
+}
+.menu li a {
+	color: #060A12;
+	text-transform: uppercase;
+	text-decoration: none;
+	
+}
+.menu li{
+	/*padding-top: 35px; */	
+	margin-right: 40px;
+}
+.lang{
+	/*padding-top: 34px;*/
+	width: 60px;
+	height: 45px;
+}
+.user-data{
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+}
+.user-data a{
+	color: #060A12;
+	margin-left: 25px;
+	padding-top: 5px;
+}
+.sign-up-btn{
+    outline: 0;
+    text-decoration: none;
+    border: 1px solid #3f98dedb;
+    border-radius: 35px;
+    text-transform: uppercase;
+    background-color: #3f98dedb;   
+}
+.sign-up-btn span{
+	color: #fff;
+	padding-top: 7px;
+	padding: 7px;
+}
+.wrapper{
+	display: flex;
+	justify-content: space-between;
+	background: url('../img/offer-fon.png') no-repeat top center / cover;
+	z-index: -1;
+	margin-left: -128px;
+	margin-top: -8px;
+	margin-right: -100px;
+}
+.offer{
+	padding-top: 150px;
+	padding-left: 10px;
+	margin-left: 151px;
+}
+.offer-title{
+	width: 535px;
+	font-size: 36px;
+	font-weight: 900;
+	color: #395998;
+	text-shadow: 0 7px 7px rgba(0, 0, 0,0.3);
+	letter-spacing:0.016em;
+	
+}
+.offer-text{
+	font-size: 16px;
+	color: #08193B;
+	width: 442px;
+	padding-top: 30px;
+	line-height:23px;
+	letter-spacing: 0.01em;
+	padding-bottom: 30px;
+}
+.offer-image{
+	padding-top: 68px;
+}
+.btn{
+	text-decoration: none;
+    border: 1px;
+    text-transform: uppercase;
+    background: rgba(212,25,193,1);
+	background: -moz-linear-gradient(-45deg, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	background: linear-gradient(to bottom right, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	background: -webkit-linear-gradient(-45deg, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	background: -o-linear-gradient(-45deg, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	background: -ms-linear-gradient(-45deg, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	background: linear-gradient(135deg, rgba(212,25,193,1) 0%, rgba(255,79,185,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d419c1', endColorstr='#ff4fb9', GradientType=1 );
+	margin: 10px 0;
+	padding: 10px;
+	color: #fff;
+	width: 220px;
+	height: 50px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 8px;
+	text-align: center;
+	-webkit-transition: all .1s ease;
+	-moz-transition: all .1s ease;
+	transition: all .1s ease;
+}
+.active a:active { 
+	box-shadow:  0px 3px 6px rgba(0, 0, 0, .9);
+	position: relative;
+	top: 6px;
+}
+.btn span {	
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 800;
+	font-size: 16px;
+}
+.about{
+	margin-top:30px;
+	background: url('../img/about-bg.jpg') no-repeat center /cover ;
+}
+.wrap{
+	padding-top: 72px;
+	display: flex;
+	justify-content: space-between;
+	color: #395998
+}
+.section-title{
+	padding-top: 162px;
+	font-size: 28px;
+	font-weight: 900;
+	letter-spacing: 0.115em;
+    padding-left: 30px;
+    width: 600px;
+    padding-bottom: 20px;
+    color: #395998;
+}
+.section-text{
+	font-size: 14px;	
+	width: 450px;
+	font-weight: 400;
+	padding-left: 30px;
+    padding-bottom: 30px;
+    line-height: 20px;
+}
+.about-btn{
+	margin-left: 30px;
+
+}
+.about-img{
+	margin-bottom: 68px;
+}
+.course{
+	/*padding: 80px 0;*/
+	margin: 90px 0;
+}
+.center-title{
+	margin: 0;
+	padding-top: 10px;
+	padding-bottom: 50px;
+	padding-left: 300px;
+	text-align: center;
+
+}
+.cards{
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 50px;
+}
+.card{
+	display: block;
+	width: 370px;
+	height: 541px;
+	background: #fff;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.course-img{
+	padding-left: 60px;
+	padding-top: 10px;
+	height: 200px;
+}
+.short-info{
+	padding-bottom: 17px;
+}
+.course-title{
+	padding: 30px 25px;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 18px;
+}
+.course-descrip{
+padding: 0px 25px;
+width: 328px;
+line-height:16px;
+padding-bottom: 30px;
+}
+.enrol-btn{;
+	text-decoration: none;
+    margin-left:  60px;
+    margin-bottom: 30px;    
+	background: linear-gradient(91.7deg, rgba(236, 66, 127, 0.99) 0%, rgba(236, 66, 127, 0.5049) 111.04%);
+	box-shadow: 0px 9px 10px rgba(235, 68, 128, 0.15);
+	text-align: center;
+    padding: 10px 30px 10px 30px;
+    font-family: 'Montserrat', sans-serif;
+	font-weight: 800;	 
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.line{
+	margin-top: 30px;
+	 width: 306px;
+}
+.author{
+	display: flex;
+}
+.teacher{
+	padding-top: 10px;
+	padding-bottom: 15px;
+	padding-left: 30px; 
+}
+.teacher-FIO{
+	font-size: 12px;
+	font-weight: 800;
+	padding-left: 15px;
+	padding-top: 28px;
+}
+.view-all{
+	background: transparent;
+	border: 1px solid #ED4E88;
+	color: #120F39;
+	width: 220px;
+	height: 50px;	
+	text-align: center;
+	margin-left: 490px; 
+	margin-bottom: 80px;
+}
+.top-courses{
+	padding-bottom: 50px;
+	margin-bottom: 10px;
+	margin: 90px 0;
+}
+.course-cards{
+	display: flex;
+	justify-content: center;
+}
+.bg-points-first{
+	position: relative;
+	z-index: -1;
+	top: -25px;
+	left: 212px;
+}
+.bg-points-second{
+	z-index: -1;
+    position: relative;
+    right: 214px;
+    bottom: -185px;
+}
+.course-card{
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	background: linear-gradient(113.01deg, rgb(25, 24, 84) 3.64%, rgb(76, 44, 161) 84.04%);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.36);
+	border-radius: 10px;
+	cursor: pointer;	
+	border: 0;
+	color: #fff;
+	text-decoration: none;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 10px;
+	font-weight: 400;
+	letter-spacing: 0.7px;
+	margin: 15px;
+	padding-right: 10px;
+	padding-left: 25px;
+	padding-top: 25px;
+	padding-bottom: 10px;
+}
+.course-card-title{
+	text-transform: uppercase;
+	line-height:  28px;
+	font-size: 24px;	
+	height: 64px;	
+	width: 318px;
+}
+.course-card-definition{
+	height: 70px;
+}
+.course-card-advantage{
+	font-size: 14px;
+	line-height: 24px;
+	border-left: 2px solid #fff;
+	padding-left: 9px;
+	width: 305px;
+	letter-spacing: 1px;
+}
+.course-card-description{
+	display: block;
+	padding-top: 42px;
+}
+.course-card-point{
+	margin-bottom: 7px;
+}
+.icons{
+	display: flex;
+}
+.icons span{
+	padding-top: 3.5px;
+	margin-left: 9px;
+}
+.icon-clock{
+	width: 13px;	
+	height: 13px;
+	padding-left: 5px;
+}
+.icon-span{
+	padding-left: 5px;
+	margin-top: -3px;
+}
+.icon-task{
+	margin-left: 3px;
+}
+.task{
+	margin-top: 0;	
+}
+.course-card-image{
+	padding-top: 30px;
+	bottom: 44px;
+	right:9px;
+	width: 180px;
+	height: 135px;
+	align-items: center;
+}
+.features{
+	margin: 90px 0;
+}
+.features h2 span {
+	color: rgba(233, 30, 99, 1);
+	text-shadow: 0 7px 7px rgba(0, 0, 0, 0.3);
+}
+.main-features{
+	display: flex;
+	justify-content: space-between;
+	padding-top: 50px;
+}
+.main-feature{
+text-align: center;	
+}
+.main-feature-image{
+padding-left: 15px;
+}
+.noneleft{
+	padding-left: 0px;
+}
+.main-feature-title{
+width: 265px;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+.main-feature-description{
+	width: 270px;	
+}
+.become-teacher{
+	margin: 90px 0;
+	padding-top: 50px;
+}
+.become-teacher h2{
+	font-size: 22px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	padding-left: 22px;
+	text-align: center;
+	width: 520px;
+}
+.join-in-block{
+	display: flex;
+	justify-content: space-between;
+}
+.join-in-block-img{
+	margin-left: -60px;
+}
+.CTA-text{
+	width: 556px;
+}
+.text{
+box-sizing: border-box;
+width: 530px;
+padding-left: 30px;	
+padding-bottom: 22px;
+text-align: justify;
+}
+/*.text span{
+	font-size:11px;
+}
+.text span .underline{
+	text-decoration: underline;
+*/
+.join-teachers-form{
+	display:flex;
+    flex-direction: column;
+    z-index: 2;
+	display: flex;
+	justify-content: center;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.36);
+	border-radius: 10px;
+	width: 450px;
+	padding: 15px 10px;
+	margin-left: 30px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+
+}
+.input{
+	width: 360px;
+	height: 35px;
+	margin-left: 30px;
+	margin-bottom: 20px;
+	padding-left: 50px;	
+	background: #FFFDFD;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border:0;
+	background: url('../img/name-icon.png')   no-repeat 2% 50%;
+}
+.teacher{
+margin-left: 30px;
+}
+.upload{
+background: linear-gradient(93.04deg, #5E008A 4.45%, rgba(69, 45, 220, 0.78) 106.8%);
+}
+.join-in{
+	background: linear-gradient(92.83deg, #E02DCE 2.86%, #BC2DE0 106.53%);
+}
+.email{
+background: url('../img/email-icon.png')   no-repeat 2% 50%;
+}
+.footer{
+	background: #2E2D6E;
+	color: #e9f1f2;
+	font-style: normal ;
+	font-size: 12px;
+	vertical-align: center;
+}
+.footer-block{
+	display: flex;
+	justify-content: space-between;
+	height: 80px;
+	padding: 20px 0;
+	align-items: center;
+}
+.social span{
+	margin-right: 20px;
+}
+.social span:hover{
+	color: #e9f1f2;
+}
+.social a{
+	margin-right: 8px;
+	text-decoration: none;
+	color: #e9f1f2;;
+    text-align: center;
+    margin-left: 4px;
+    line-height: 22px;
+}
+.social a:hover{
+	width: 16px;
+	height: 16px;
+
+}
+.fa {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    }
+ .fa-facebook-f:before, .fa-facebook:before {
+    content: "\f09a";}
+ .fa-telegram:before {
+    content: "\f1d8";
+}
+.fa-youtube-play:before {
+    content: "\f16a";
+}
+.fa-instagram:before {
+    content: "\f16d";
+    }
+.toTop{
+	margin-right: 10px;
+	transition-duration: 200ms;
+}
+
+
+/*.down {
+    transition: all .6s ease;
+    text-decoration: none;
+}
+.fa-chevron-circle-down{
+padding-left: 570px;
+
+}*/
+/*login page for students*/
+.sign-up-btn {
+	border: 0px;
+	background: #fff;
+	padding: 0;
+	margin: 0;
+}
+.sign-up-btn span{
+	color: #2b538e;
+}
+.form-container{
+	box-sizing: border-box;
+	padding: 70px 0;
+	background: url('../img/login-form-container-bg.png') center no-repeat;
+}
+.frame{
+	width: 450px;
+	height: 470px;
+	background: #fff;
+	background: rgba(202, 202, 202, 0.3);
+	border-radius: 10px;
+	margin-left: 260px;
+	padding: 35px 60px;
+}
+.frame input{
+	background: rgba(255, 255, 255, 0.44);
+	width: 360px;
+	height: 45px;
+	padding-left: 15px;	
+	font-size: 15px;
+}
+.login-title{
+padding-top: 30px;
+padding-left: 160px;
+color:#fff;
+margin-bottom: 40px;
+}
+.form{
+	background: #2B538E;
+	margin-left: 101px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.btn-show-pass{
+	position: absolute;
+	margin-left: -30px;
+	padding-top: 14px;
+	cursor: pointer;
+}
+.login-form label{
+	color: #ffffffdb;
+}
+.label-text{
+	margin-left: 30px;
+	line-height: 28px;
+	font-size: 15px;
+}
+.forgot-password{
+	margin-left:97px;
+}
+.forgot-password a{
+	color: #ffffffdb;
+	font-size: 12px;
+	margin-bottom: 8px;
+}
+.rememberMe{
+	display: flex;
+}
+.rememberMe input{
+	margin-left: 30px;
+	width: 13px;
+	height: 13px;
+}
+.rememberMe label{
+	text-align-last: left;
+	top: -4px;
+}
+.registration-link{
+color: #ffffffdb;
+margin-left: 156px;
+}
+/*registration page for students*/
+.registration-page{
+	box-sizing: border-box;
+	background: url('../img/register-bg.png')  no-repeat  center /cover;
+}
+.registration-page-frame{
+	margin-left: 300px;
+	height: auto;
+	background: #fff;
+	box-shadow: 0px 12px 54px rgba(0, 0, 0, 0.11);
+}
+.reg-page-frame-header{
+	background: #71D2E9;
+	box-shadow: 0px 12px 54px rgba(0, 0, 0, 0.11);
+	width: 570px;
+	margin-left: -60px;
+	margin-top: -36px;
+	border-radius:  10px 10px 0 0;
+	margin-bottom: 40px;	
+
+}
+.reg-page-frame-header h3{
+	padding: 25px 0;
+	font-size: 18px;
+	color: #fff;
+	text-align: center;
+}
+.registration-form input{
+padding-left: 75px;
+}
+.reg-eye-pos{
+margin-left: 434px;
+margin-top: -65px;
+}
+.fa-user{
+	position: absolute;
+    margin-left: 40px;
+    padding-top: 5px;
+    padding-right: 2px;
+    color: #120F39;
+ }
+.fa-users{
+	position: absolute;
+    margin-left: 40px;
+    padding-top: 5px;
+    padding-right: 2px;
+    color: #120F39;
+ }
+.fa-id-badge{
+	position: absolute;
+    margin-left: 40px;
+    padding-top: 5px;
+    padding-right: 2px;
+    color: #120F39;
+ }
+.fa-phone{
+	position: absolute;
+	color: #120F39;
+	margin-top: 5px;
+	margin-left: 42px;
+}
+.fa-envelope{
+	position: absolute;
+	color: #120F39;
+	margin-top: 5px;
+	margin-left: 40px;
+}
+.fa-user-circle{
+	position: absolute;
+	color: #120F39;
+	margin-top: 5px;
+	margin-left: 40px;
+}
+.avatar-img  {
+	box-sizing: border-box;
+	box-shadow: none;
+	border: 2px dashed #93c3ca;
+    border-radius: 7px;
+    padding-top: 10px;
+	padding-left: 0px;
+	vertical-align: center;
+}
+.registration-form input[type="file"]{
+	width: 430px;
+	margin-bottom: 0;
+}
+.fa-unlock-alt{
+	position: absolute;
+	color: #120F39;
+	margin-top: 6px;
+	margin-left: 43px;
+}
+/*.fa-lock{
+	position: absolute;
+	color: #120F39;
+	margin-top: 6px;
+	margin-left: 43px;
+}*/
+.fa-university{
+	position: absolute;
+	color: #120F39;
+	margin-top: 8px;
+	margin-left: 38px;
+	font-size: 2.5em;
+}
+.fa-graduation-cap{
+	position: absolute;
+	color: #120F39;
+	margin-top: 8px;
+	margin-left: 35px;
+}
+#smal{
+	font-size: 2.49em;
+}
+ .vertical-line{
+ 	border-right: 1px solid rgba(0, 0, 0, 0.18);
+ 	width: 83px;
+ 	height: 46px;
+ 	position: relative;
+ 	margin-bottom: 28px;
+ }
+.login-link{
+	color: blue;
+	text-decoration: none;
+	margin-left: 97px;
+}
+.login-link span{
+	font-size: 13px;
+	color: #120F39;
+}
+/*.form-error-active {
+	color: red; 
+	margin-left: 30px;
+	display: block;
+    
+
+}*/
+/*3colored(blue,green,red)stickers*/
+/*.clear {
+  clear: both;
+} 
+#tabs-icon{
+	font-size: 1.75em;
+    padding-left: 4px;
+    padding-top: 2px;
+    margin: 0;
+    color: #fff;
+}
+.tabs {
+  position: relative;
+  z-index: 0;
+  top: 37px;
+  left: -90px;
+}
+.tabs a {
+  position: relative;
+  height: 30px;
+  width: 36px;
+  display: block;
+  margin-bottom: 10px;
+  padding-top: 3px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  -webkit-box-shadow: 0 0 2px #1a1a1a;
+  -moz-box-shadow: 0 0 2px #1a1a1a;
+  box-shadow: 0 0 2px #1a1a1a;
+}
+.tabs a.active, .tabs a:hover {
+  margin-left: -8px;
+}
+.tabs a:before {
+  font-size: 14px;
+  color: white;
+  padding-left: 10px;
+}
+
+.blueBox {
+  color: white;
+  border: solid 1px #0083ff;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #0083ff), color-stop(100%, #0073e0));
+  background: -webkit-linear-gradient(#0083ff, #0073e0);
+  background: -moz-linear-gradient(#0083ff, #0073e0);
+  background: -o-linear-gradient(#0083ff, #0073e0);
+  background: linear-gradient(#0083ff, #0073e0);
+  cursor:pointer;
+}
+
+.greenBox {
+  color: white;
+  border: solid 1px #57c100;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #58c400), color-stop(100%, #4aa500));
+  background: -webkit-linear-gradient(#58c400, #4aa500);
+  background: -moz-linear-gradient(#58c400, #4aa500);
+  background: -o-linear-gradient(#58c400, #4aa500);
+  background: linear-gradient(#58c400, #4aa500);
+  cursor:pointer;
+}
+
+.redBox {
+  color: white;
+  border: solid 1px #e50000;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e50000), color-stop(100%, #c90000));
+  background: -webkit-linear-gradient(#e50000, #c90000);
+  background: -moz-linear-gradient(#e50000, #c90000);
+  background: -o-linear-gradient(#e50000, #c90000);
+  background: linear-gradient(#e50000, #c90000);
+  cursor:pointer;
+}
+
+.redBox:hover, .greenBox:hover, .blueBox:hover {opacity:0.9;} 
+
+
+.tabContainer {
+  height: 230px;
+  display: none;
+  border: solid 1px white;
+  padding: 20px;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(#ffffff, #dddddd);
+  background-image: -moz-linear-gradient(#ffffff, #dddddd);
+  background-image: -o-linear-gradient(#ffffff, #dddddd);
+  background-image: linear-gradient(#ffffff, #dddddd);
+  -webkit-transition: all 0.4s linear;
+  -moz-transition: all 0.4s linear;
+  -o-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+.tabContainer.active {
+  display: block;
+}*/
+/*Akademik ma'lumotlar*/
+/*.form-btns{
+	display: flex;
+	justify-content:space-between;
+
+}
+.two-btn{
+	width: 160px;
+	margin-left: 41px;
+}*/
+.tab {
+  display: none;
+}
+
+/*3step registration form css code:*/
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none; 
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+.buttons-block{
+	margin-bottom: 15px;
+}
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Mark the active step: */
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #4CAF50;
+}
+
+.mistake {
+    font-size: 12px;
+    color: #e1356a;
+    margin-bottom: 30px;
+}
+ .close {
+    display: none;
+}
+ .red {
+    color: red;
+    font-size: 12px;
+    margin-top: -5px;
+}
+ .tal {
+    text-align: left;
+    display: block;
+}
+ .mislabelphone {
+    margin-top: 0;
+}
+.offerta{
+	display:flex; 
+	margin-top: -30px;
+	margin-bottom: 30px;
+}
+#wlpeTosCheckboxLabel {
+	color: #000;
+	padding-top: 16px;
+	font-size: 13px;
+}
+  #wlpeTosCheckbox{ 
+ 	width: 30px;
+    margin-left: 30px;
+}
+
+    /*Avatar css*/
+.avatar-wrapper{
+	position: relative;
+	height: 50px;
+	width: 50px;
+	/*margin: -100px auto 20px auto;*/
+	border-radius: 50%;
+	overflow: hidden;
+	box-shadow: none;
+	transition: all .3s ease;
+}
+.avatar-wrapper:hover{
+	transform: scale(1.05);
+	cursor: pointer;
+}
+.avatar-wrapper:hover .profile-pic{
+	opacity: .5;
+}
+.avatar-wrapper .profile-pic{
+	height: 100%;
+	width: 100%;
+	transition: all .3s ease;
+}
+.avatar-wrapper .profile-pic:after{
+	font-family: FontAwesome;
+	content: '\f007';
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	font-size: 44px;
+	background: #ecf0f1;
+	text-align: center;
+}
+.avatar-wrapper .upload-button{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.avatar-wrapper .upload-button .fa-arrow-circle-up{
+	position: absolute;
+	font-size: 73px;
+	top: -16px;
+	left: -5px;
+	text-align: center;
+	opacity: 0;
+	transition: all .3s ease;
+	color:#e4eae7;
+}
+.avatar-wrapper .upload-button:hover .fa-arrow-circle-up{
+opacity: .9;
+}
+/*#avatar-header{
+	background: #4e250d;
+	text-align: center;
+	margin-left: 0px auto;
+	margin-left: 35%;
+	margin-right: 35%;
+	border-radius: 30px;
+	margin-top: 15%;
+}*/
+.avatar-body{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.name-title{
+	margin-left: 15px;
+}
+.avatar-header{
+	border: 1px dashed #03A9F4;
+	margin-right: -13px;
+	margin-left: 30px;
+	padding-left: 10px;
+	/*padding-top: -7px;*/
+	padding-bottom: 8px;
+	padding-top: 8px;
+	border-radius: 2px;
+	margin-bottom: 32px;
+}
+    /*Avatar css*/
+.fields{
+
+}
+.checkboxContainer input{
+	display: none;
+}
+.checkboxContainer{
+	display: inline-block;
+	padding-left: 30px;
+	position: relative;
+	cursor: pointer;
+	font-family: 'Montserrat';
+	font-size: 22px;
+	user-select: none;
+}
+.checkboxContainer .checkmark{
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	background: #eee;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.checkboxContainer input:checked + .checkmark{
+background-color: #2196fc;
+}
+.checkboxContainer:hover .checkmark{
+	background-color: #ccc;
+}
+.checkboxContainer input:checked + .checkmark:after{
+content: "";
+position: absolute;
+height: 4px;
+width: 9px;
+border-left: 2px solid white;
+border-bottom: 2px solid white;
+top: 45%;
+left: 50%;
+transform: translate(-50%, -50%) rotate(-45deg);
+}
